@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maxime Périgny - Portfolio</title>
+  <meta name="description" content="Portfolio de Maxime Périgny - Découvrez mes projets créatifs et mon travail.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-logo">MP</a>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Accueil</a></li>
+        <li><a href="projects.html">Projets</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <!-- Video Background -->
+    <div class="hero-video-container">
+      <!-- Desktop Video (horizontal) - Cloudinary CDN -->
+      <video class="hero-video hero-video-desktop" autoplay muted loop playsinline>
+        <source src="https://res.cloudinary.com/dtwelbtjt/video/upload/v1770154392/video-hero_mxhzdb.mov"
+          type="video/quicktime">
+        <source src="https://res.cloudinary.com/dtwelbtjt/video/upload/v1770154392/video-hero_mxhzdb.mp4"
+          type="video/mp4">
+      </video>
+      <!-- Mobile Video (vertical) - Cloudinary CDN -->
+      <video class="hero-video hero-video-mobile" autoplay muted loop playsinline>
+        <source src="https://res.cloudinary.com/dtwelbtjt/video/upload/v1770154400/Vertical_jrgple.mp4"
+          type="video/mp4">
+      </video>
+    </div>
+
+    <!-- Blur overlay for smooth transition -->
+    <div class="hero-blur-overlay"></div>
+
+    <!-- Hero Content -->
+    <div class="container">
+      <div class="hero-content">
+        <p class="hero-subtitle animate-fade-in-up">Créateur & Vidéaste</p>
+        <h1 class="hero-title animate-fade-in-up delay-1">Maxime Périgny</h1>
+        <p class="hero-description animate-fade-in-up delay-2">
+          Je crée des expériences visuelles uniques qui racontent des histoires.
+          Passionné par la vidéo, le motion design et l'innovation créative.
+        </p>
+        <a href="projects.html" class="btn btn-primary animate-fade-in-up delay-3">
+          Voir mes projets
+          <span class="btn-icon">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Highlighted Projects -->
+  <section class="projects-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Projets récents</h2>
+        <a href="projects.html" class="btn btn-outline">
+          Voir tous les projets
+          <span class="btn-icon">→</span>
+        </a>
+      </div>
+
+      <div class="projects-grid">
+        <!-- Project 1 -->
+        <article class="project-card">
+          <div class="project-thumbnail">
+            <!-- Remplace par ton image -->
+            <div class="project-thumbnail-placeholder">
+              <span>Image du projet</span>
+            </div>
+          </div>
+          <div class="project-info">
+            <span class="project-category">Vidéo</span>
+            <h3 class="project-title">Projet Créatif #1</h3>
+            <p class="project-description">
+              Description courte du projet. Explique brièvement ce que tu as réalisé.
+            </p>
+          </div>
+        </article>
+
+        <!-- Project 2 -->
+        <article class="project-card">
+          <div class="project-thumbnail">
+            <!-- Remplace par ton image -->
+            <div class="project-thumbnail-placeholder">
+              <span>Image du projet</span>
+            </div>
+          </div>
+          <div class="project-info">
+            <span class="project-category">Motion Design</span>
+            <h3 class="project-title">Projet Créatif #2</h3>
+            <p class="project-description">
+              Description courte du projet. Explique brièvement ce que tu as réalisé.
+            </p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <p class="footer-text">© 2026 Maxime Périgny. Tous droits réservés.</p>
+      <div class="footer-links">
+        <a href="#">LinkedIn</a>
+        <a href="#">Instagram</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
