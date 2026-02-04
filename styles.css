@@ -373,20 +373,40 @@ h3 {
   overflow: hidden;
   background: var(--bg-card);
   border: 1px solid var(--border);
-  transition: all var(--transition-base);
+  transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
 }
 
 .project-card:hover {
-  transform: translateY(-8px);
-  border-color: var(--border-hover);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  transform: translateY(-8px) scale(1.05);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(255, 255, 255, 0.05);
 }
 
 .project-thumbnail {
   aspect-ratio: 16/10;
   background: var(--bg-secondary);
   overflow: hidden;
+  position: relative;
+}
+
+/* Overlay gradient on hover */
+.project-thumbnail::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+      transparent 0%,
+      transparent 50%,
+      rgba(0, 0, 0, 0.6) 100%);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.project-card:hover .project-thumbnail::after {
+  opacity: 1;
 }
 
 .project-thumbnail img {
@@ -397,7 +417,7 @@ h3 {
 }
 
 .project-card:hover .project-thumbnail img {
-  transform: scale(1.05);
+  transform: scale(1.1);
 }
 
 /* Placeholder for project thumbnails */
@@ -410,6 +430,21 @@ h3 {
   justify-content: center;
   color: var(--text-muted);
   font-size: 0.85rem;
+  transition: all var(--transition-base);
+}
+
+.project-card:hover .project-thumbnail-placeholder {
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, #1a1a1a 100%);
+  color: var(--text-secondary);
+  transform: scale(1.05);
+}
+
+.project-card:hover .project-thumbnail-placeholder span {
+  transform: scale(1.15);
+}
+
+.project-thumbnail-placeholder span {
+  transition: transform var(--transition-base);
 }
 
 .project-info {
@@ -433,6 +468,59 @@ h3 {
   color: var(--text-secondary);
   font-size: 0.9rem;
   line-height: 1.5;
+}
+
+/* ================================
+   PROJECTS SLIDER
+   ================================ */
+
+.projects-slider {
+  position: relative;
+}
+
+.slider-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  border-radius: var(--radius-lg);
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE/Edge */
+}
+
+.slider-container::-webkit-scrollbar {
+  display: none;
+  /* Chrome/Safari */
+}
+
+.slider-track {
+  display: flex;
+  gap: var(--space-lg);
+  padding: var(--space-lg) var(--space-sm);
+}
+
+.slider-card {
+  flex: 0 0 calc(50% - var(--space-lg) / 2);
+  min-width: calc(50% - var(--space-lg) / 2);
+  scroll-snap-align: start;
+  cursor: default;
+  /* No click on homepage slider */
+}
+
+.slider-card:hover {
+  transform: none;
+  /* No hover animation on homepage slider */
+}
+
+/* Slider Responsive */
+@media (max-width: 768px) {
+  .slider-card {
+    flex: 0 0 85%;
+    min-width: 85%;
+  }
 }
 
 /* ================================
@@ -537,12 +625,25 @@ h3 {
    ================================ */
 
 @media (max-width: 1024px) {
+
+  /* Make video fullscreen on tablets */
   .hero-video-container {
-    width: 55%;
+    width: 100%;
   }
 
   .hero-content {
     max-width: 500px;
+  }
+
+  /* Stronger blur overlay for better text readability */
+  .hero-blur-overlay {
+    width: 65%;
+    background: linear-gradient(to right,
+        rgba(10, 10, 10, 0.98) 0%,
+        rgba(10, 10, 10, 0.9) 40%,
+        rgba(10, 10, 10, 0.7) 60%,
+        rgba(10, 10, 10, 0.4) 80%,
+        transparent 100%);
   }
 }
 
