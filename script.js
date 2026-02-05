@@ -28,6 +28,56 @@ document.addEventListener('DOMContentLoaded', () => {
     observer.observe(card);
   });
 
+  // Slider Scroll Hint - Show after inactivity if no horizontal scroll
+  const sliderContainer = document.getElementById('sliderContainer');
+  const sliderScrollHint = document.getElementById('sliderScrollHint');
+
+  if (sliderContainer && sliderScrollHint) {
+    let sliderHintTimeout;
+    let hasSliderScrolled = false;
+
+    // Show hint after 2 seconds of inactivity
+    const showSliderHint = () => {
+      if (!hasSliderScrolled && sliderContainer.scrollLeft < 50) {
+        sliderScrollHint.classList.add('visible');
+      }
+    };
+
+    // Hide hint on horizontal scroll
+    const hideSliderHint = () => {
+      if (sliderContainer.scrollLeft > 50) {
+        hasSliderScrolled = true;
+        sliderScrollHint.classList.remove('visible');
+        clearTimeout(sliderHintTimeout);
+      }
+    };
+
+    // Listen for horizontal scroll on slider
+    sliderContainer.addEventListener('scroll', hideSliderHint, { passive: true });
+
+    // Also hide on touch/mouse interaction
+    sliderContainer.addEventListener('mousedown', () => {
+      hasSliderScrolled = true;
+      sliderScrollHint.classList.remove('visible');
+    }, { once: true });
+
+    sliderContainer.addEventListener('touchstart', () => {
+      hasSliderScrolled = true;
+      sliderScrollHint.classList.remove('visible');
+    }, { once: true });
+
+    // Start timeout when slider is visible
+    const sliderObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !hasSliderScrolled) {
+          sliderHintTimeout = setTimeout(showSliderHint, 2000);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    sliderObserver.observe(sliderContainer);
+  }
+
   // Smooth page transitions (optional enhancement)
   document.querySelectorAll('a[href]').forEach(link => {
     const href = link.getAttribute('href');

@@ -4,99 +4,86 @@
 
 ```
 Portfolio/
-├── index.html       ← Page d'accueil (slider horizontal de projets)
-├── projects.html    ← Page tous les projets (cliquables)
-├── project-1.html   ← Page projet individuelle (template)
-├── project-2.html   
-├── project-3.html   
-├── project-4.html   
-├── styles.css       ← Styles du site
-├── script.js        ← JavaScript
-└── assets/          ← Images et médias (à créer)
-    └── projects/    ← Images des projets
+├── index.html           ← Page d'accueil
+├── projects.html        ← Liste de tous les projets
+├── contact.html         ← Page contact
+├── styles.css
+├── script.js
+└── projets/
+    ├── projet_1/
+    │   ├── index.html   ← Page détail du projet
+    │   ├── cover.jpg    ← Image principale
+    │   └── photos...    ← Autres images
+    ├── projet_2/
+    │   └── ...
+    └── ...
 ```
-
----
-
-## 🎯 Fonctionnement des pages
-
-| Page | Comportement |
-|------|--------------|
-| **Accueil** | Slider défilable (scroll horizontal), pas de clic |
-| **Projets** | Cartes cliquables vers pages individuelles, hover animé |
-| **Projet individuel** | Détails complets du projet |
 
 ---
 
 ## ➕ Ajouter un nouveau projet
 
-### 1. Crée la page projet
+### 1. Crée le dossier du projet
 
-Copie `project-1.html` vers `project-X.html` et modifie :
-- Le titre dans `<title>`
-- La catégorie, le titre, les métadonnées
-- Le contenu descriptif
+```bash
+mkdir projets/projet_X
+```
 
-### 2. Ajoute la carte sur `projects.html`
+### 2. Copie le template
+
+```bash
+cp projets/projet_1/index.html projets/projet_X/
+```
+
+### 3. Personnalise `projets/projet_X/index.html`
+
+- Modifie le `<title>` et la balise `<meta description>`
+- Modifie le `<h1>` avec le nom du projet
+- Ajoute ta description
+- Ajoute tes images (voir ci-dessous)
+
+### 4. Ajoute tes images dans le dossier
+
+```
+projets/projet_X/
+├── index.html
+├── cover.jpg        ← Image principale
+├── photo_1.jpg
+└── photo_2.jpg
+```
+
+Dans `index.html`, utilise :
+```html
+<img src="cover.jpg" alt="Description">
+```
+
+### 5. Ajoute la carte sur `projects.html`
 
 ```html
-<a href="project-X.html" class="project-card">
+<a href="projets/projet_X/" class="project-card">
     <div class="project-thumbnail">
-        <img src="assets/projects/ton-image.jpg" alt="Description">
+        <img src="projets/projet_X/cover.jpg" alt="Nom du projet">
     </div>
     <div class="project-info">
         <span class="project-category">CATÉGORIE</span>
         <h3 class="project-title">Nom du projet</h3>
-        <p class="project-description">
-            Description courte (1-2 phrases).
-        </p>
+        <p class="project-description">Description courte.</p>
     </div>
 </a>
 ```
 
-→ Colle dans `<div class="projects-page-grid">`
-
-### 3. (Optionnel) Ajoute au slider de l'accueil
-
-```html
-<article class="project-card slider-card">
-    <div class="project-thumbnail">
-        <img src="assets/projects/ton-image.jpg" alt="Description">
-    </div>
-    <div class="project-info">
-        <span class="project-category">CATÉGORIE</span>
-        <h3 class="project-title">Nom du projet</h3>
-        <p class="project-description">
-            Description courte.
-        </p>
-    </div>
-</article>
-```
-
-→ Colle dans `<div class="slider-track">` (index.html)
-
-> ⚠️ Sur l'accueil, utilise `<article>` (non cliquable), sur projets utilise `<a href>` (cliquable)
-
 ---
 
-## 📝 Catégories suggérées
+## 📝 Catégories
 
 `Vidéo` · `Motion Design` · `Montage` · `Création` · `Court-métrage` · `Clip musical`
 
 ---
 
-## 🖼️ Cloudinary pour les médias
-
-```html
-<img src="https://res.cloudinary.com/dtwelbtjt/image/upload/v1234567890/nom-image.jpg" alt="...">
-```
-
----
-
 ## ✅ Checklist nouveau projet
 
-- [ ] Créer `project-X.html` (copier template)
-- [ ] Personnaliser le contenu de la page projet
-- [ ] Ajouter la carte cliquable sur `projects.html`
-- [ ] (Optionnel) Ajouter au slider de `index.html`
-- [ ] Tester sur mobile et desktop
+- [ ] Créer dossier `projets/projet_X/`
+- [ ] Copier et personnaliser `index.html`
+- [ ] Ajouter images dans le dossier
+- [ ] Ajouter carte cliquable sur `projects.html`
+- [ ] Tester les liens
