@@ -11,8 +11,8 @@
   --bg-card-hover: #1a1a1a;
 
   --text-primary: #ffffff;
-  --text-secondary: #a0a0a0;
-  --text-muted: #666666;
+  --text-secondary: #d4d4d4;
+  --text-muted: #a3a3a3;
 
   --accent: #ffffff;
   --accent-subtle: rgba(255, 255, 255, 0.1);
@@ -255,14 +255,14 @@ h3 {
   position: absolute;
   top: 0;
   left: 0;
-  width: 50%;
+  width: 60%;
   height: 100%;
   z-index: 3;
   background: linear-gradient(to right,
-      rgba(10, 10, 10, 0.95) 0%,
-      rgba(10, 10, 10, 0.85) 30%,
-      rgba(10, 10, 10, 0.6) 50%,
-      rgba(10, 10, 10, 0.3) 70%,
+      rgba(10, 10, 10, 0.98) 0%,
+      rgba(10, 10, 10, 0.9) 30%,
+      rgba(10, 10, 10, 0.7) 50%,
+      rgba(10, 10, 10, 0.4) 70%,
       transparent 100%);
 }
 
