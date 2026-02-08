@@ -329,15 +329,86 @@ document.addEventListener('DOMContentLoaded', () => {
     addHoverListeners();
   }
 
-  // FORCE EMAIL BUTTON CLICK
+  // FORCE EMAIL BUTTON CLICK & COPY TO CLIPBOARD
   const emailBtn = document.getElementById('emailBtn');
   if (emailBtn) {
     emailBtn.addEventListener('click', (e) => {
-      // Allow default behavior, but also force it just in case
-      console.log('Email button clicked');
-      // setTimeout(() => {
-      //     window.location.href = "mailto:maxime.perigny.50@gmail.com";
-      // }, 100);
+      e.preventDefault();
+      const email = "maxime.perigny.50@gmail.com";
+      const originalText = emailBtn.innerHTML; // Save innerHTML to keep styling if any
+
+      // Copy to clipboard
+      navigator.clipboard.writeText(email).then(() => {
+        // Visual feedback
+        emailBtn.textContent = "Email copié !";
+        emailBtn.style.backgroundColor = "#4CA154"; // Green success feedback
+        emailBtn.style.color = "#FFFFFF";
+        emailBtn.style.borderColor = "#4CA154";
+
+        // Revert after 2 seconds
+        setTimeout(() => {
+          emailBtn.innerHTML = "M'envoyer un email";
+          emailBtn.style.backgroundColor = ""; // Reset to CSS default
+          emailBtn.style.color = "";
+          emailBtn.style.borderColor = "";
+        }, 2000);
+
+        // Still try to open mail client
+        window.location.href = `mailto:${email}`;
+      }).catch(err => {
+        console.error('Failed to copy: ', err);
+        // Fallback if copy fails
+        window.location.href = `mailto:${email}`;
+      });
+    });
+  }
+
+  // ================================
+  // PROJECT FILTERS
+  // ================================
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const projectCards = document.querySelectorAll('#grid-view .project-card');
+
+  if (filterBtns.length > 0) {
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // 1. Update Buttons
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        // 2. Filter Projects
+        const filter = btn.getAttribute('data-filter');
+
+        projectCards.forEach(card => {
+          const category = card.getAttribute('data-category');
+
+          // Reset animation classes
+          card.classList.remove('animating-in');
+          card.classList.remove('animating-out');
+
+          if (filter === 'all' || filter === category) {
+            // SHOW
+            if (card.classList.contains('filter-hidden')) {
+              card.classList.remove('filter-hidden');
+              card.classList.add('animating-in');
+            } else {
+              card.style.display = '';
+            }
+          } else {
+            // HIDE
+            if (!card.classList.contains('filter-hidden')) {
+              card.classList.add('animating-out');
+              setTimeout(() => {
+                // Check if it's still supposed to be hidden (user might have clicked quickly)
+                if (card.classList.contains('animating-out')) {
+                  card.classList.add('filter-hidden');
+                  card.classList.remove('animating-out');
+                }
+              }, 300);
+            }
+          }
+        });
+      });
     });
   }
 });

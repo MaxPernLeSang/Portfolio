@@ -364,10 +364,18 @@
 
             <!-- ========== GRID VIEW ========== -->
             <div id="grid-view" class="projects-view active">
+                <!-- Filter Bar -->
+                <div class="filter-bar animate-fade-in-up delay-3">
+                    <button class="filter-btn active" data-filter="all">Tous</button>
+                    <button class="filter-btn" data-filter="video">Vidéo</button>
+                    <button class="filter-btn" data-filter="photo">Photo</button>
+                    <button class="filter-btn" data-filter="autres">Autres</button>
+                </div>
+
                 <div class="projects-page-grid">
 
                     <!-- Trail Blanc La Rosière (2026) -->
-                    <a href="projets/projet_7/index.html" class="project-card">
+                    <a href="projets/projet_7/index.html" class="project-card" data-category="video">
                         <div class="project-thumbnail">
                             <img src="https://i.ytimg.com/vi/wIfZ9nyZeyE/maxresdefault.jpg"
                                 alt="Trail Blanc La Rosière 2026">
@@ -381,7 +389,7 @@
 
 
                     <!-- Explore Savoie La Rosière (Déc 2025) -->
-                    <a href="projets/projet_12/index.html" class="project-card">
+                    <a href="projets/projet_12/index.html" class="project-card" data-category="photo">
                         <div class="project-thumbnail">
                             <img src="assets/thumbnails/explore_savoie_video.jpeg" alt="Explore Savoie La Rosière">
                         </div>
@@ -393,7 +401,7 @@
                     </a>
 
                     <!-- Les Matins Nostalgie (Jan 2025) -->
-                    <a href="projets/projet_11/index.html" class="project-card">
+                    <a href="projets/projet_11/index.html" class="project-card" data-category="photo">
                         <div class="project-thumbnail">
                             <img src="assets/thumbnails/nostalgie.png" alt="Les Matins Nostalgie">
                         </div>
@@ -405,7 +413,7 @@
                     </a>
 
                     <!-- Site Officiel La Rosière (Mi-Nov 2025) -->
-                    <a href="projets/projet_13/index.html" class="project-card">
+                    <a href="projets/projet_13/index.html" class="project-card" data-category="autres">
                         <div class="project-thumbnail">
                             <img src="assets/thumbnails/la_rosiere_site_v2.png" alt="Site Officiel La Rosière">
                         </div>
@@ -417,7 +425,7 @@
                     </a>
 
                     <!-- Dameuse La Rosière (Nov 2025) -->
-                    <a href="projets/projet_10/index.html" class="project-card">
+                    <a href="projets/projet_10/index.html" class="project-card" data-category="video">
                         <div class="project-thumbnail">
                             <img src="assets/thumbnails/dameuse.png" alt="Dameuse La Rosière">
                         </div>
@@ -429,7 +437,7 @@
                     </a>
 
                     <!-- Vue Drone La Rosière (Oct 2025) -->
-                    <a href="projets/projet_9/index.html" class="project-card">
+                    <a href="projets/projet_9/index.html" class="project-card" data-category="video">
                         <div class="project-thumbnail">
                             <img src="assets/thumbnails/drone.png" alt="Vue Drone La Rosière">
                         </div>
@@ -441,7 +449,7 @@
                     </a>
 
                     <!-- Tennis La Rosière (Juin 2025) -->
-                    <a href="projets/projet_8/index.html" class="project-card">
+                    <a href="projets/projet_8/index.html" class="project-card" data-category="video">
                         <div class="project-thumbnail">
                             <img src="assets/thumbnails/tennis.png" alt="Tennis La Rosière">
                         </div>
@@ -453,7 +461,7 @@
                     </a>
 
                     <!-- Last Man Riding (2025) -->
-                    <a href="projets/projet_6/index.html" class="project-card">
+                    <a href="projets/projet_6/index.html" class="project-card" data-category="video">
                         <div class="project-thumbnail">
                             <img src="https://i.ytimg.com/vi/wraUG-eyWt4/maxresdefault.jpg" alt="Last Man Riding">
                         </div>
@@ -465,7 +473,7 @@
                     </a>
 
                     <!-- Tour de l'Abitibi 2024 -->
-                    <a href="projets/projet_5/index.html" class="project-card">
+                    <a href="projets/projet_5/index.html" class="project-card" data-category="video">
                         <div class="project-thumbnail">
                             <img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/859133208608647.66f1bd54e0d03.jpg"
                                 alt="Tour de l'Abitibi 2024">
@@ -478,7 +486,7 @@
                     </a>
 
                     <!-- Réussir Autrement (2024) -->
-                    <a href="projets/projet_4/index.html" class="project-card">
+                    <a href="projets/projet_4/index.html" class="project-card" data-category="video">
                         <div class="project-thumbnail">
                             <img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/dc0890205601801.66bdcf8489032.png"
                                 alt="Réussir Autrement">
@@ -491,7 +499,7 @@
                     </a>
 
                     <!-- DaVinci l'Expérience (2024) -->
-                    <a href="projets/projet_3/index.html" class="project-card">
+                    <a href="projets/projet_3/index.html" class="project-card" data-category="autres">
                         <div class="project-thumbnail">
                             <img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/3cc018205524947.66bc87830dbda.jpg"
                                 alt="DaVinci l'Expérience">
@@ -505,7 +513,7 @@
                     </a>
 
                     <!-- Table Forêt (2024) -->
-                    <a href="projets/projet_2/index.html" class="project-card">
+                    <a href="projets/projet_2/index.html" class="project-card" data-category="video">
                         <div class="project-thumbnail">
                             <img src="https://mir-s3-cdn-cf.behance.net/projects/max_808/494d1f205603283.Y3JvcCwxNDE5LDExMTAsMTU0LDA.png"
                                 alt="Table Forêt">
@@ -519,7 +527,7 @@
                     </a>
 
                     <!-- GRWM (2024) -->
-                    <a href="projets/projet_1/index.html" class="project-card">
+                    <a href="projets/projet_1/index.html" class="project-card" data-category="video">
                         <div class="project-thumbnail">
                             <img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/d37350197104915.662a83d294937.jpg"
                                 alt="GRWM">

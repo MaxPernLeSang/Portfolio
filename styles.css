@@ -341,6 +341,71 @@ h3 {
 }
 
 /* ================================
+   PROJECT FILTERS
+   ================================ */
+
+.filter-bar {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xl);
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 8px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+}
+
+.filter-btn.active {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  border-color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Filter Animation Classes */
+.project-card.filter-hidden {
+  display: none;
+  /* Hide element completely so layout adjusts */
+}
+
+.project-card.animating-out {
+  opacity: 0;
+  transform: scale(0.95);
+  pointer-events: none;
+}
+
+.project-card.animating-in {
+  animation: filterFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes filterFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ================================
    PROJECTS SECTION
    ================================ */
 
