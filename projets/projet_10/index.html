@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dameuse La Rosière - Maxime Périgny</title>
+    <meta name="description" content="Dameuse sous la neige La Rosière 2025 | Maxime Périgny">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../styles.css">
+    <style>
+        .project-page {
+            padding-top: 120px;
+            padding-bottom: var(--space-2xl);
+        }
+
+        .project-hero {
+            margin-bottom: var(--space-xl);
+        }
+
+        .instagram-embed {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: var(--space-xl);
+            padding: var(--space-md);
+        }
+
+        .instagram-embed blockquote {
+            margin: 0 !important;
+            max-width: 400px !important;
+            min-width: 300px !important;
+        }
+
+        /* Container pour forcer le ratio 9:16 des Reels */
+        .reel-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto var(--space-xl);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .reel-container iframe {
+            width: 100%;
+            height: 714px;
+            /* 400 * 16/9 inversé pour 9:16 */
+            border: none;
+            border-radius: var(--radius-lg);
+        }
+
+        .project-meta {
+            display: flex;
+            gap: var(--space-lg);
+            margin-bottom: var(--space-md);
+            flex-wrap: wrap;
+        }
+
+        .project-meta-item {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .project-meta-label {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .project-content {
+            max-width: 800px;
+        }
+
+        .project-content p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: var(--space-md);
+        }
+
+        .project-content h2 {
+            margin-top: var(--space-xl);
+            margin-bottom: var(--space-md);
+            font-size: 1.5rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            color: var(--text-secondary);
+            margin-bottom: var(--space-lg);
+            transition: color var(--transition-fast);
+        }
+
+        .back-link:hover {
+            color: var(--text-primary);
+        }
+
+        .instagram-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, rgba(225, 48, 108, 0.2), rgba(131, 58, 180, 0.2));
+            border: 1px solid rgba(225, 48, 108, 0.4);
+            border-radius: var(--radius-md);
+            color: #e1306c;
+            font-weight: 600;
+            margin-bottom: var(--space-lg);
+        }
+
+        .instagram-badge svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-sm);
+            margin: var(--space-lg) 0;
+        }
+
+        .skill-badge {
+            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="nav">
+        <div class="container nav-container">
+            <a href="../../index.html" class="nav-logo">MP</a>
+            <ul class="nav-links">
+                <li><a href="../../index.html">Accueil</a></li>
+                <li><a href="../../projects.html" class="active">Projets</a></li>
+                <li><a href="../../contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="project-page">
+        <div class="container">
+            <a href="../../projects.html" class="back-link">← Retour aux projets</a>
+
+            <style>
+                .project-layout {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: var(--space-2xl);
+                    align-items: start;
+                    margin-top: var(--space-xl);
+                }
+
+                .project-media {
+                    position: sticky;
+                    top: 120px;
+                }
+
+                .project-info-side {
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                .reel-container {
+                    margin: 0;
+                    max-width: 100%;
+                    border-radius: var(--radius-lg);
+                    overflow: hidden;
+                    background: var(--bg-card);
+                    border: 1px solid var(--border-subtle);
+                }
+
+                .reel-container iframe {
+                    width: 100%;
+                    height: 750px;
+                    border: none;
+                }
+
+                @media (max-width: 900px) {
+                    .project-layout {
+                        grid-template-columns: 1fr;
+                        gap: var(--space-xl);
+                    }
+
+                    .project-media {
+                        position: static;
+                        max-width: 400px;
+                        margin: 0 auto;
+                    }
+
+                    .reel-container iframe {
+                        height: 714px;
+                    }
+                }
+            </style>
+
+            <div class="project-layout">
+                <!-- COLONNE GAUCHE: MEDIA -->
+                <div class="project-media">
+                    <div class="reel-container">
+                        <iframe src="https://www.instagram.com/reel/DRg9kC3jLbK/embed/" allowfullscreen loading="lazy">
+                        </iframe>
+                    </div>
+                </div>
+
+                <!-- COLONNE DROITE: INFO -->
+                <div class="project-info-side">
+                    <div class="instagram-badge">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+                        </svg>
+                        @larosiere1850
+                    </div>
+
+                    <h1 class="page-title" style="margin-top:0;">Dameuse La Rosière</h1>
+
+                    <div class="project-meta">
+                        <div class="project-meta-item">
+                            <span class="project-meta-label">Date</span>
+                            Novembre 2025
+                        </div>
+                        <div class="project-meta-item">
+                            <span class="project-meta-label">Type</span>
+                            Instagram Reel
+                        </div>
+                        <div class="project-meta-item">
+                            <span class="project-meta-label">Client</span>
+                            La Rosière
+                        </div>
+                    </div>
+
+                    <div class="project-content" style="max-width: 100%; margin-top: var(--space-md);">
+                        <p class="project-synopsis">
+                            La Rosière sous la neige, on ne s'en lasse pas 🤍 Avec les 110 cm de neige qui sont tombés!
+                        </p>
+                        <p>
+                            Reel cinématique montrant le travail nocturne des dameuses sur les pistes.
+                            Images capturées pendant les chutes de neige avec une ambiance hivernale intense.
+                            Un énorme merci au Domaine Skiable pour leur travail dans ces conditions hivernales 💪
+                        </p>
+
+                        <h2>🏷️ Tags</h2>
+                        <div class="skills-list">
+                            <span class="skill-badge">Prise de vue</span>
+                            <span class="skill-badge">Montage</span>
+                            <span class="skill-badge">Cinématique</span>
+                            <span class="skill-badge">La Rosière</span>
+                            <span class="skill-badge">Ski</span>
+                            <span class="skill-badge">Instagram Reel</span>
+                        </div>
+
+                        <p style="margin-top: var(--space-xl);">
+                            <a href="https://www.instagram.com/p/DRg9kC3jLbK/" target="_blank"
+                                class="btn btn-primary">Voir sur
+                                Instagram →</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <p class="footer-text">© 2026 Maxime Périgny. Tous droits réservés.</p>
+            <div class="footer-links">
+                <a href="#">LinkedIn</a>
+                <a href="#">Instagram</a>
+                <a href="../../contact.html">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script async src="//www.instagram.com/embed.js"></script>
+    <script src="../../script.js"></script>
+</body>
+
+</html>

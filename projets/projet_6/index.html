@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Last Man Riding - Maxime Périgny</title>
+    <meta name="description" content="Last Man Riding La Rosière 2025 - Récap vidéo | Maxime Périgny">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../styles.css">
+    <style>
+        .project-page {
+            padding-top: 120px;
+            padding-bottom: var(--space-2xl);
+        }
+
+        .project-hero {
+            margin-bottom: var(--space-xl);
+        }
+
+        .project-video {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-lg);
+            overflow: hidden;
+            background: var(--bg-card);
+        }
+
+        .project-video iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: var(--space-lg);
+            margin-bottom: var(--space-md);
+            flex-wrap: wrap;
+        }
+
+        .project-meta-item {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .project-meta-label {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .project-content {
+            max-width: 800px;
+        }
+
+        .project-content p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: var(--space-md);
+        }
+
+        .project-content h2 {
+            margin-top: var(--space-xl);
+            margin-bottom: var(--space-md);
+            font-size: 1.5rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            color: var(--text-secondary);
+            margin-bottom: var(--space-lg);
+            transition: color var(--transition-fast);
+        }
+
+        .back-link:hover {
+            color: var(--text-primary);
+        }
+
+        /* Client badge */
+        .client-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, rgba(220, 20, 60, 0.2), rgba(255, 69, 0, 0.2));
+            border: 1px solid rgba(220, 20, 60, 0.4);
+            border-radius: var(--radius-md);
+            color: #dc143c;
+            font-weight: 600;
+            margin-bottom: var(--space-lg);
+        }
+
+        .client-badge svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Skills */
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-sm);
+            margin: var(--space-lg) 0;
+        }
+
+        .skill-badge {
+            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container nav-container">
+            <a href="../../index.html" class="nav-logo">MP</a>
+            <ul class="nav-links">
+                <li><a href="../../index.html">Accueil</a></li>
+                <li><a href="../../projects.html" class="active">Projets</a></li>
+                <li><a href="../../contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Project Page -->
+    <main class="project-page">
+        <div class="container">
+            <a href="../../projects.html" class="back-link">
+                ← Retour aux projets
+            </a>
+
+            <div class="project-hero">
+                <!-- Video Embed -->
+                <div class="project-video">
+                    <iframe src="https://www.youtube.com/embed/wraUG-eyWt4" title="Last Man Riding La Rosière 2025"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+
+                <div class="client-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <polygon points="10,8 16,12 10,16" />
+                    </svg>
+                    Client : La Rosière TV
+                </div>
+
+                <h1 class="page-title">Last Man Riding</h1>
+
+                <div class="project-meta">
+                    <div class="project-meta-item">
+                        <span class="project-meta-label">Année</span>
+                        2025
+                    </div>
+                    <div class="project-meta-item">
+                        <span class="project-meta-label">Type</span>
+                        Récap Vidéo
+                    </div>
+                    <div class="project-meta-item">
+                        <span class="project-meta-label">Lieu</span>
+                        La Rosière
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-content">
+                <p class="project-synopsis">
+                    Revivez les meilleurs moments du Last Man Riding à La Rosière 🚴‍♂️🔥
+                </p>
+                <p>
+                    Deux semaines après l'événement, voici les images les plus folles de cette édition !
+                    Chutes, style, endurance… tout y est.
+                </p>
+
+                <h2>🏔️ Tags</h2>
+                <div class="skills-list">
+                    <span class="skill-badge">Cyclisme</span>
+                    <span class="skill-badge">Sport</span>
+                    <span class="skill-badge">Endurance</span>
+                    <span class="skill-badge">La Rosière</span>
+                    <span class="skill-badge">Événement</span>
+                    <span class="skill-badge">Montage</span>
+                </div>
+
+                <p style="margin-top: var(--space-xl);">
+                    <a href="https://www.youtube.com/watch?v=wraUG-eyWt4" target="_blank" class="btn btn-primary">
+                        Voir sur YouTube →
+                    </a>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <p class="footer-text">© 2026 Maxime Périgny. Tous droits réservés.</p>
+            <div class="footer-links">
+                <a href="#">LinkedIn</a>
+                <a href="#">Instagram</a>
+                <a href="../../contact.html">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../../script.js"></script>
+</body>
+
+</html>

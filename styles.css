@@ -794,6 +794,14 @@ h3 {
     grid-template-columns: 1fr;
   }
 
+  .projects-section {
+    padding-top: var(--space-lg);
+  }
+
+  .page-header {
+    padding-bottom: var(--space-lg);
+  }
+
   .section-header {
     flex-direction: column;
     gap: var(--space-md);

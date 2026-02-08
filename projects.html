@@ -17,6 +17,297 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* iOS-style Toggle Switch */
+        .view-toggle {
+            display: flex;
+            justify-content: center;
+            margin-bottom: var(--space-xl);
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: flex;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50px;
+            padding: 4px;
+            gap: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: calc(50% - 4px);
+            height: calc(100% - 8px);
+            background: linear-gradient(135deg, #6495ed, #4169e1);
+            border-radius: 50px;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 10px rgba(100, 149, 237, 0.4);
+            z-index: 0;
+        }
+
+        .toggle-switch.timeline-active .toggle-slider {
+            transform: translateX(100%);
+        }
+
+        .toggle-option {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .toggle-option.active {
+            color: white;
+        }
+
+        .toggle-option svg {
+            width: 18px;
+            height: 18px;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-option:hover svg {
+            transform: scale(1.1);
+        }
+
+        /* Views Container */
+        .projects-view {
+            display: none;
+        }
+
+        .projects-view.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ========== TIMELINE STYLES ========== */
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 0 var(--space-xl) 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 100%;
+            background: linear-gradient(180deg,
+                    transparent 0%,
+                    rgba(100, 149, 237, 0.5) 10%,
+                    rgba(100, 149, 237, 0.8) 50%,
+                    rgba(100, 149, 237, 0.5) 90%,
+                    transparent 100%);
+            border-radius: 3px;
+        }
+
+        .timeline-year {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            margin: var(--space-xl) 0;
+        }
+
+        .timeline-year:first-child {
+            margin-top: 0;
+        }
+
+        .timeline-year-badge {
+            background: linear-gradient(135deg, #6495ed, #4169e1);
+            color: white;
+            padding: 12px 32px;
+            border-radius: 30px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: var(--font-heading);
+            box-shadow: 0 4px 20px rgba(100, 149, 237, 0.4);
+            z-index: 10;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 4px 20px rgba(100, 149, 237, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 4px 30px rgba(100, 149, 237, 0.6);
+            }
+        }
+
+        .timeline-item {
+            position: relative;
+            width: 50%;
+            padding: var(--space-lg);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .timeline-item.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            padding-right: calc(var(--space-xl) + 30px);
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+            padding-left: calc(var(--space-xl) + 30px);
+            text-align: left;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: calc(var(--space-lg) + 20px);
+            width: 16px;
+            height: 16px;
+            background: #6495ed;
+            border: 4px solid var(--bg-primary);
+            border-radius: 50%;
+            z-index: 5;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 0 0 rgba(100, 149, 237, 0.4);
+        }
+
+        .timeline-item:nth-child(odd)::before {
+            right: -8px;
+        }
+
+        .timeline-item:nth-child(even)::before {
+            left: -8px;
+        }
+
+        .timeline-item:hover::before {
+            transform: scale(1.3);
+            box-shadow: 0 0 0 8px rgba(100, 149, 237, 0.2);
+        }
+
+        .timeline-card {
+            display: block;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+        }
+
+        .timeline-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(100, 149, 237, 0.5);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(100, 149, 237, 0.15);
+        }
+
+        .timeline-card-image {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .timeline-card:hover .timeline-card-image {
+            transform: scale(1.05);
+        }
+
+        .timeline-card-content {
+            padding: var(--space-md);
+        }
+
+        .timeline-card-category {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(100, 149, 237, 0.15);
+            color: #6495ed;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--space-sm);
+        }
+
+        .timeline-card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-xs);
+            transition: color 0.3s ease;
+        }
+
+        .timeline-card:hover .timeline-card-title {
+            color: #6495ed;
+        }
+
+        .timeline-card-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .view-toggle {
+                margin-bottom: var(--space-md);
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                left: 0 !important;
+                padding-left: 60px !important;
+                padding-right: var(--space-md) !important;
+                text-align: left !important;
+            }
+
+            .timeline-item::before {
+                left: 12px !important;
+                right: auto !important;
+            }
+
+            .timeline-year-badge {
+                font-size: 1.2rem;
+                padding: 10px 24px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -39,90 +330,388 @@
             <p class="page-description animate-fade-in-up delay-1">
                 Une sélection de mes travaux créatifs en vidéo, motion design et plus encore.
             </p>
+
+            <!-- iOS-style Toggle Switch -->
+            <div class="view-toggle animate-fade-in-up delay-2">
+                <div class="toggle-switch" id="viewToggle">
+                    <div class="toggle-slider"></div>
+                    <button class="toggle-option active" data-view="grid">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7" rx="1" />
+                            <rect x="14" y="3" width="7" height="7" rx="1" />
+                            <rect x="3" y="14" width="7" height="7" rx="1" />
+                            <rect x="14" y="14" width="7" height="7" rx="1" />
+                        </svg>
+                        Grille
+                    </button>
+                    <button class="toggle-option" data-view="timeline">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="2" x2="12" y2="22" />
+                            <circle cx="12" cy="6" r="3" />
+                            <circle cx="12" cy="12" r="3" />
+                            <circle cx="12" cy="18" r="3" />
+                        </svg>
+                        Timeline
+                    </button>
+                </div>
+            </div>
         </div>
     </header>
 
-    <!-- All Projects -->
+    <!-- Projects Section -->
     <section class="projects-section">
         <div class="container">
-            <div class="projects-page-grid">
-                <!-- GRWM -->
-                <a href="projets/projet_1/index.html" class="project-card">
-                    <div class="project-thumbnail">
-                        <img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/d37350197104915.662a83d294937.jpg"
-                            alt="GRWM">
-                    </div>
-                    <div class="project-info">
-                        <span class="project-category">Court-métrage</span>
-                        <h3 class="project-title">GRWM</h3>
-                        <p class="project-description">
-                            Direction Photo pour ce court-métrage primé plusieurs fois en festival.
-                        </p>
-                    </div>
-                </a>
 
-                <!-- Table Forêt -->
-                <a href="projets/projet_2/index.html" class="project-card">
-                    <div class="project-thumbnail">
-                        <img src="https://mir-s3-cdn-cf.behance.net/projects/max_808/494d1f205603283.Y3JvcCwxNDE5LDExMTAsMTU0LDA.png"
-                            alt="Table Forêt">
-                    </div>
-                    <div class="project-info">
-                        <span class="project-category">Vidéo 360°</span>
-                        <h3 class="project-title">Table Forêt</h3>
-                        <p class="project-description">
-                            Expérience immersive 360° présentant les métiers de la forêt.
-                        </p>
-                    </div>
-                </a>
+            <!-- ========== GRID VIEW ========== -->
+            <div id="grid-view" class="projects-view active">
+                <div class="projects-page-grid">
 
-                <!-- DaVinci l'Expérience -->
-                <a href="projets/projet_3/index.html" class="project-card">
-                    <div class="project-thumbnail">
-                        <img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/3cc018205524947.66bc87830dbda.jpg"
-                            alt="DaVinci l'Expérience">
-                    </div>
-                    <div class="project-info">
-                        <span class="project-category">Experience Design</span>
-                        <h3 class="project-title">DaVinci l'Expérience</h3>
-                        <p class="project-description">
-                            Expérience immersive avec IA - Présenté à Radio-Canada et au RIMA.
-                        </p>
-                    </div>
-                </a>
+                    <!-- Trail Blanc La Rosière (2026) -->
+                    <a href="projets/projet_7/index.html" class="project-card">
+                        <div class="project-thumbnail">
+                            <img src="https://i.ytimg.com/vi/wIfZ9nyZeyE/maxresdefault.jpg"
+                                alt="Trail Blanc La Rosière 2026">
+                        </div>
+                        <div class="project-info">
+                            <span class="project-category">Récap Vidéo</span>
+                            <h3 class="project-title">Trail Blanc La Rosière</h3>
+                            <p class="project-description">Trail running hivernal 2026.</p>
+                        </div>
+                    </a>
 
-                <!-- Réussir Autrement -->
-                <a href="projets/projet_4/index.html" class="project-card">
-                    <div class="project-thumbnail">
-                        <img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/dc0890205601801.66bdcf8489032.png"
-                            alt="Réussir Autrement">
-                    </div>
-                    <div class="project-info">
-                        <span class="project-category">Portraits Vidéo</span>
-                        <h3 class="project-title">Réussir Autrement</h3>
-                        <p class="project-description">
-                            Portraits vidéo pour Priorité Jeunesse.
-                        </p>
-                    </div>
-                </a>
 
-                <!-- Tour de l'Abitibi 2024 -->
-                <a href="projets/projet_5/index.html" class="project-card">
-                    <div class="project-thumbnail">
-                        <img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/859133208608647.66f1bd54e0d03.jpg"
-                            alt="Tour de l'Abitibi 2024">
-                    </div>
-                    <div class="project-info">
-                        <span class="project-category">Caméra Moto</span>
-                        <h3 class="project-title">Tour de l'Abitibi 2024</h3>
-                        <p class="project-description">
-                            Caméraman moto pour TVGO.
-                        </p>
-                    </div>
-                </a>
+                    <!-- Explore Savoie La Rosière (Déc 2025) -->
+                    <a href="projets/projet_12/index.html" class="project-card">
+                        <div class="project-thumbnail">
+                            <img src="assets/thumbnails/explore_savoie.png" alt="Explore Savoie La Rosière">
+                        </div>
+                        <div class="project-info">
+                            <span class="project-category">Guide & Photo BTS</span>
+                            <h3 class="project-title">Explore Savoie La Rosière</h3>
+                            <p class="project-description">Série Explore Savoie - Déc 2025.</p>
+                        </div>
+                    </a>
 
-                <!-- Ajoute plus de projets ici -->
+                    <!-- Les Matins Nostalgie (Jan 2025) -->
+                    <a href="projets/projet_11/index.html" class="project-card">
+                        <div class="project-thumbnail">
+                            <img src="assets/thumbnails/nostalgie.png" alt="Les Matins Nostalgie">
+                        </div>
+                        <div class="project-info">
+                            <span class="project-category">Prise d'images</span>
+                            <h3 class="project-title">Les Matins Nostalgie</h3>
+                            <p class="project-description">Philippe & Sandy - Jan 2025.</p>
+                        </div>
+                    </a>
+
+                    <!-- Site Officiel La Rosière (Mi-Nov 2025) -->
+                    <a href="projets/projet_13/index.html" class="project-card">
+                        <div class="project-thumbnail">
+                            <img src="assets/thumbnails/la_rosiere_site.jpg" alt="Site Officiel La Rosière">
+                        </div>
+                        <div class="project-info">
+                            <span class="project-category">Contenu Web & Social</span>
+                            <h3 class="project-title">Site Officiel La Rosière</h3>
+                            <p class="project-description">Contenu photo/vidéo - Mi-Nov 2025.</p>
+                        </div>
+                    </a>
+
+                    <!-- Dameuse La Rosière (Nov 2025) -->
+                    <a href="projets/projet_10/index.html" class="project-card">
+                        <div class="project-thumbnail">
+                            <img src="assets/thumbnails/dameuse.png" alt="Dameuse La Rosière">
+                        </div>
+                        <div class="project-info">
+                            <span class="project-category">Instagram Reel</span>
+                            <h3 class="project-title">Dameuse La Rosière</h3>
+                            <p class="project-description">Travail nocturne - Nov 2025.</p>
+                        </div>
+                    </a>
+
+                    <!-- Vue Drone La Rosière (Oct 2025) -->
+                    <a href="projets/projet_9/index.html" class="project-card">
+                        <div class="project-thumbnail">
+                            <img src="assets/thumbnails/drone.png" alt="Vue Drone La Rosière">
+                        </div>
+                        <div class="project-info">
+                            <span class="project-category">Instagram Reel</span>
+                            <h3 class="project-title">Vue Drone La Rosière</h3>
+                            <p class="project-description">Vue aérienne - Oct 2025.</p>
+                        </div>
+                    </a>
+
+                    <!-- Tennis La Rosière (Juin 2025) -->
+                    <a href="projets/projet_8/index.html" class="project-card">
+                        <div class="project-thumbnail">
+                            <img src="assets/thumbnails/tennis.png" alt="Tennis La Rosière">
+                        </div>
+                        <div class="project-info">
+                            <span class="project-category">Instagram Reel</span>
+                            <h3 class="project-title">Tennis La Rosière</h3>
+                            <p class="project-description">Promo estivale - Juin 2025.</p>
+                        </div>
+                    </a>
+
+                    <!-- Last Man Riding (2025) -->
+                    <a href="projets/projet_6/index.html" class="project-card">
+                        <div class="project-thumbnail">
+                            <img src="https://i.ytimg.com/vi/wraUG-eyWt4/maxresdefault.jpg" alt="Last Man Riding">
+                        </div>
+                        <div class="project-info">
+                            <span class="project-category">Récap Vidéo</span>
+                            <h3 class="project-title">Last Man Riding</h3>
+                            <p class="project-description">La Rosière 2025 - Cyclisme.</p>
+                        </div>
+                    </a>
+
+                    <!-- Tour de l'Abitibi 2024 -->
+                    <a href="projets/projet_5/index.html" class="project-card">
+                        <div class="project-thumbnail">
+                            <img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/859133208608647.66f1bd54e0d03.jpg"
+                                alt="Tour de l'Abitibi 2024">
+                        </div>
+                        <div class="project-info">
+                            <span class="project-category">Caméra Moto</span>
+                            <h3 class="project-title">Tour de l'Abitibi 2024</h3>
+                            <p class="project-description">Caméraman moto pour TVGO.</p>
+                        </div>
+                    </a>
+
+                    <!-- Réussir Autrement (2024) -->
+                    <a href="projets/projet_4/index.html" class="project-card">
+                        <div class="project-thumbnail">
+                            <img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/dc0890205601801.66bdcf8489032.png"
+                                alt="Réussir Autrement">
+                        </div>
+                        <div class="project-info">
+                            <span class="project-category">Portraits Vidéo</span>
+                            <h3 class="project-title">Réussir Autrement</h3>
+                            <p class="project-description">Portraits vidéo pour Priorité Jeunesse.</p>
+                        </div>
+                    </a>
+
+                    <!-- DaVinci l'Expérience (2024) -->
+                    <a href="projets/projet_3/index.html" class="project-card">
+                        <div class="project-thumbnail">
+                            <img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/3cc018205524947.66bc87830dbda.jpg"
+                                alt="DaVinci l'Expérience">
+                        </div>
+                        <div class="project-info">
+                            <span class="project-category">Experience Design</span>
+                            <h3 class="project-title">DaVinci l'Expérience</h3>
+                            <p class="project-description">Expérience immersive avec IA - Présenté à Radio-Canada et au
+                                RIMA.</p>
+                        </div>
+                    </a>
+
+                    <!-- Table Forêt (2024) -->
+                    <a href="projets/projet_2/index.html" class="project-card">
+                        <div class="project-thumbnail">
+                            <img src="https://mir-s3-cdn-cf.behance.net/projects/max_808/494d1f205603283.Y3JvcCwxNDE5LDExMTAsMTU0LDA.png"
+                                alt="Table Forêt">
+                        </div>
+                        <div class="project-info">
+                            <span class="project-category">Vidéo 360°</span>
+                            <h3 class="project-title">Table Forêt</h3>
+                            <p class="project-description">Expérience immersive 360° présentant les métiers de la forêt.
+                            </p>
+                        </div>
+                    </a>
+
+                    <!-- GRWM (2024) -->
+                    <a href="projets/projet_1/index.html" class="project-card">
+                        <div class="project-thumbnail">
+                            <img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/d37350197104915.662a83d294937.jpg"
+                                alt="GRWM">
+                        </div>
+                        <div class="project-info">
+                            <span class="project-category">Court-métrage</span>
+                            <h3 class="project-title">GRWM</h3>
+                            <p class="project-description">Direction Photo pour ce court-métrage primé plusieurs fois en
+                                festival.</p>
+                        </div>
+                    </a>
+                </div>
             </div>
+
+            <!-- ========== TIMELINE VIEW ========== -->
+            <div id="timeline-view" class="projects-view">
+                <div class="timeline">
+                    <!-- 2026 -->
+                    <div class="timeline-year">
+                        <span class="timeline-year-badge">2026</span>
+                    </div>
+
+
+
+
+                    <div class="timeline-item">
+                        <a href="projets/projet_7/index.html" class="timeline-card">
+                            <img src="https://i.ytimg.com/vi/wIfZ9nyZeyE/maxresdefault.jpg" alt="Trail Blanc"
+                                class="timeline-card-image">
+                            <div class="timeline-card-content">
+                                <span class="timeline-card-category">Récap Vidéo</span>
+                                <h3 class="timeline-card-title">Trail Blanc La Rosière</h3>
+                                <p class="timeline-card-description">Trail running hivernal sur sentiers enneigés</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- 2025 -->
+                    <div class="timeline-year">
+                        <span class="timeline-year-badge">2025</span>
+                    </div>
+
+                    <div class="timeline-item">
+                        <a href="projets/projet_12/index.html" class="timeline-card">
+                            <img src="assets/thumbnails/explore_savoie.png" alt="Explore Savoie La Rosière"
+                                class="timeline-card-image">
+                            <div class="timeline-card-content">
+                                <span class="timeline-card-category">Guide & Photo BTS</span>
+                                <h3 class="timeline-card-title">Explore Savoie La Rosière</h3>
+                                <p class="timeline-card-description">Avec Virginie Guilhaume & Marie Bochet</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="timeline-item">
+                        <a href="projets/projet_11/index.html" class="timeline-card">
+                            <img src="assets/thumbnails/nostalgie.png" alt="Les Matins Nostalgie"
+                                class="timeline-card-image">
+                            <div class="timeline-card-content">
+                                <span class="timeline-card-category">Prise d'images</span>
+                                <h3 class="timeline-card-title">Les Matins Nostalgie</h3>
+                                <p class="timeline-card-description">Philippe & Sandy à La Rosière</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="timeline-item">
+                        <a href="projets/projet_13/index.html" class="timeline-card">
+                            <img src="assets/thumbnails/la_rosiere_site.jpg" alt="Site Officiel La Rosière"
+                                class="timeline-card-image">
+                            <div class="timeline-card-content">
+                                <span class="timeline-card-category">Contenu Web & Social</span>
+                                <h3 class="timeline-card-title">Site Officiel La Rosière</h3>
+                                <p class="timeline-card-description">Alimentation site web & réseaux</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="timeline-item">
+                        <a href="projets/projet_10/index.html" class="timeline-card">
+                            <img src="assets/thumbnails/dameuse.png" alt="Dameuse La Rosière"
+                                class="timeline-card-image">
+                            <div class="timeline-card-content">
+                                <span class="timeline-card-category">Instagram Reel</span>
+                                <h3 class="timeline-card-title">Dameuse La Rosière</h3>
+                                <p class="timeline-card-description">Travail nocturne sous 110cm de neige</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="timeline-item">
+                        <a href="projets/projet_9/index.html" class="timeline-card">
+                            <img src="assets/thumbnails/drone.png" alt="Vue Drone La Rosière"
+                                class="timeline-card-image">
+                            <div class="timeline-card-content">
+                                <span class="timeline-card-category">Instagram Reel</span>
+                                <h3 class="timeline-card-title">Vue Drone La Rosière</h3>
+                                <p class="timeline-card-description">Vue aérienne du village enneigé</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="timeline-item">
+                        <a href="projets/projet_8/index.html" class="timeline-card">
+                            <img src="assets/thumbnails/tennis.png" alt="Tennis La Rosière" class="timeline-card-image">
+                            <div class="timeline-card-content">
+                                <span class="timeline-card-category">Instagram Reel</span>
+                                <h3 class="timeline-card-title">Tennis La Rosière</h3>
+                                <p class="timeline-card-description">Promo courts gratuits</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="timeline-item">
+                        <a href="projets/projet_6/index.html" class="timeline-card">
+                            <img src="https://i.ytimg.com/vi/wraUG-eyWt4/maxresdefault.jpg" alt="Last Man Riding"
+                                class="timeline-card-image">
+                            <div class="timeline-card-content">
+                                <span class="timeline-card-category">Récap Vidéo</span>
+                                <h3 class="timeline-card-title">Last Man Riding</h3>
+                                <p class="timeline-card-description">Événement cycliste à La Rosière</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- 2024 -->
+                    <div class="timeline-year">
+                        <span class="timeline-year-badge">2024</span>
+                    </div>
+
+                    <div class="timeline-item">
+                        <a href="projets/projet_5/index.html" class="timeline-card">
+                            <img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/859133208608647.66f1bd54e0d03.jpg"
+                                alt="Tour de l'Abitibi" class="timeline-card-image">
+                            <div class="timeline-card-content">
+                                <span class="timeline-card-category">Caméra Moto</span>
+                                <h3 class="timeline-card-title">Tour de l'Abitibi</h3>
+                                <p class="timeline-card-description">Caméraman moto pour TVGO</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="timeline-item">
+                        <a href="projets/projet_4/index.html" class="timeline-card">
+                            <img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/dc0890205601801.66bdcf8489032.png"
+                                alt="Réussir Autrement" class="timeline-card-image">
+                            <div class="timeline-card-content">
+                                <span class="timeline-card-category">Portraits Vidéo</span>
+                                <h3 class="timeline-card-title">Réussir Autrement</h3>
+                                <p class="timeline-card-description">Portraits pour Priorité Jeunesse</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="timeline-item">
+                        <a href="projets/projet_3/index.html" class="timeline-card">
+                            <img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/3cc018205524947.66bc87830dbda.jpg"
+                                alt="DaVinci l'Expérience" class="timeline-card-image">
+                            <div class="timeline-card-content">
+                                <span class="timeline-card-category">Experience Design</span>
+                                <h3 class="timeline-card-title">DaVinci l'Expérience</h3>
+                                <p class="timeline-card-description">Expérience immersive avec IA</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="timeline-item">
+                        <a href="projets/projet_2/index.html" class="timeline-card">
+                            <img src="https://mir-s3-cdn-cf.behance.net/projects/max_808/494d1f205603283.Y3JvcCwxNDE5LDExMTAsMTU0LDA.png"
+                                alt="Table Forêt" class="timeline-card-image">
+                            <div class="timeline-card-content">
+                                <span class="timeline-card-category">Vidéo 360°</span>
+                                <h3 class="timeline-card-title">Table Forêt</h3>
+                                <p class="timeline-card-description">Expérience immersive 360° avec l'UQAT</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="timeline-item">
+                        <a href="projets/projet_1/index.html" class="timeline-card">
+                            <img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/d37350197104915.662a83d294937.jpg"
+                                alt="GRWM" class="timeline-card-image">
+                            <div class="timeline-card-content">
+                                <span class="timeline-card-category">Court-métrage</span>
+                                <h3 class="timeline-card-title">GRWM</h3>
+                                <p class="timeline-card-description">Direction Photo - Primé en festival</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </section>
 
@@ -133,11 +722,57 @@
             <div class="footer-links">
                 <a href="#">LinkedIn</a>
                 <a href="#">Instagram</a>
-                <a href="#">Contact</a>
+                <a href="contact.html">Contact</a>
             </div>
         </div>
     </footer>
 
+    <script>
+        // iOS-style Toggle Switch
+        const toggleSwitch = document.getElementById('viewToggle');
+        const toggleOptions = document.querySelectorAll('.toggle-option');
+        const views = document.querySelectorAll('.projects-view');
+
+        toggleOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const viewType = option.dataset.view;
+
+                // Update toggle buttons
+                toggleOptions.forEach(o => o.classList.remove('active'));
+                option.classList.add('active');
+
+                // Slide the toggle
+                if (viewType === 'timeline') {
+                    toggleSwitch.classList.add('timeline-active');
+                } else {
+                    toggleSwitch.classList.remove('timeline-active');
+                }
+
+                // Update views
+                views.forEach(v => v.classList.remove('active'));
+                document.getElementById(`${viewType}-view`).classList.add('active');
+
+                // Trigger timeline animations
+                if (viewType === 'timeline') {
+                    setTimeout(() => {
+                        document.querySelectorAll('.timeline-item').forEach((item, i) => {
+                            setTimeout(() => item.classList.add('in-view'), i * 100);
+                        });
+                    }, 100);
+                }
+            });
+        });
+
+        // Scroll animation for timeline
+        const observerOptions = { threshold: 0.2, rootMargin: '0px 0px -50px 0px' };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('in-view');
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.timeline-item').forEach(item => observer.observe(item));
+    </script>
     <script src="script.js"></script>
 </body>
 
