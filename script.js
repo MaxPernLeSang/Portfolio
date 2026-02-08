@@ -203,4 +203,141 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize
     updateSlider();
   }
+
+  // ================================
+  // VIDEO PREVIEWS (HOVER)
+  // ================================
+  document.querySelectorAll('.project-card').forEach(card => {
+    let video = null;
+    let hasError = false;
+
+    // Get project ID from href
+    // Expecting href="projets/projet_X/index.html"
+    const link = card.getAttribute('href');
+    if (!link) return;
+
+    // Extract folder name e.g. "projet_12"
+    const match = link.match(/projets\/(.*?)\//);
+    if (!match) return;
+
+    const projectId = match[1];
+    const previewPath = `assets/previews/${projectId}.mp4`;
+
+    card.addEventListener('mouseenter', () => {
+      if (hasError) return;
+
+      if (!video) {
+        // Create video element on first hover
+        video = document.createElement('video');
+        video.src = previewPath;
+        video.className = 'project-preview-video';
+        video.muted = true;
+        video.loop = true;
+        video.playsInline = true; // Capitalized I for JS property
+
+        // Handle load success
+        video.addEventListener('loadeddata', () => {
+          video.classList.add('active');
+          video.play().catch(e => console.log('Preview playback failed:', e));
+        });
+
+        // Handle error (file missing)
+        video.addEventListener('error', () => {
+          hasError = true;
+          video.remove();
+          video = null;
+        });
+
+        const thumbnail = card.querySelector('.project-thumbnail');
+        if (thumbnail) thumbnail.appendChild(video);
+      } else {
+        // Video already exists, just play
+        video.currentTime = 0;
+        video.play().catch(e => { });
+        video.classList.add('active');
+      }
+    });
+
+    card.addEventListener('mouseleave', () => {
+      if (video) {
+        video.classList.remove('active');
+        setTimeout(() => {
+          if (video) video.pause();
+        }, 400); // Wait for fade out
+      }
+    });
+  });
+
+  // ================================
+  // CUSTOM CURSOR
+  // ================================
+  if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    const cursor = document.createElement('div');
+    cursor.classList.add('custom-cursor');
+    document.body.appendChild(cursor);
+
+    const cursorDot = document.createElement('div');
+    cursorDot.classList.add('custom-cursor-dot');
+    document.body.appendChild(cursorDot);
+
+    let mouseX = 0;
+    let mouseY = 0;
+    let cursorX = 0;
+    let cursorY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+
+      // Update dot immediately
+      cursorDot.style.left = mouseX + 'px';
+      cursorDot.style.top = mouseY + 'px';
+    });
+
+    // Smooth follow for the main cursor circle
+    function animateCursor() {
+      const dx = mouseX - cursorX;
+      const dy = mouseY - cursorY;
+
+      cursorX += dx * 0.15;
+      cursorY += dy * 0.15;
+
+      cursor.style.left = cursorX + 'px';
+      cursor.style.top = cursorY + 'px';
+
+      requestAnimationFrame(animateCursor);
+    }
+
+    animateCursor();
+
+    const addHoverListeners = () => {
+      const hoverElements = document.querySelectorAll('a, button, .project-card, .slider-btn');
+
+      hoverElements.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          cursor.classList.add('hover');
+          cursorDot.style.opacity = '0'; // Hide dot on hover
+        });
+
+        el.addEventListener('mouseleave', () => {
+          cursor.classList.remove('hover');
+          cursorDot.style.opacity = '1'; // Show dot again
+        });
+      });
+    };
+
+    addHoverListeners();
+  }
+
+  // FORCE EMAIL BUTTON CLICK
+  const emailBtn = document.getElementById('emailBtn');
+  if (emailBtn) {
+    emailBtn.addEventListener('click', (e) => {
+      // Allow default behavior, but also force it just in case
+      console.log('Email button clicked');
+      // setTimeout(() => {
+      //     window.location.href = "mailto:maxime.perigny.50@gmail.com";
+      // }, 100);
+    });
+  }
 });
