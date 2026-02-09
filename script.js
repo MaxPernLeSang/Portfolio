@@ -411,4 +411,29 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   }
+
+  // ================================
+  // TIMELINE SCROLL SPY
+  // ================================
+  const timelineYears = document.querySelectorAll('.timeline-year-badge');
+
+  if (timelineYears.length > 0) {
+    const yearObserverOptions = {
+      root: null,
+      rootMargin: '-40% 0px -40% 0px', // Trigger when element is in the middle 20% of viewport
+      threshold: 0
+    };
+
+    const yearObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        } else {
+          entry.target.classList.remove('active');
+        }
+      });
+    }, yearObserverOptions);
+
+    timelineYears.forEach(year => yearObserver.observe(year));
+  }
 });

@@ -150,19 +150,18 @@
             font-family: var(--font-heading);
             box-shadow: 0 4px 20px rgba(100, 149, 237, 0.4);
             z-index: 10;
-            animation: pulse 2s ease-in-out infinite;
+            transition: all 0.4s ease;
+            opacity: 0.5;
+            transform: scale(0.9);
+            filter: grayscale(0.5);
         }
 
-        @keyframes pulse {
-
-            0%,
-            100% {
-                box-shadow: 0 4px 20px rgba(100, 149, 237, 0.4);
-            }
-
-            50% {
-                box-shadow: 0 4px 30px rgba(100, 149, 237, 0.6);
-            }
+        .timeline-year-badge.active {
+            opacity: 1;
+            transform: scale(1.1);
+            filter: grayscale(0);
+            box-shadow: 0 0 30px rgba(100, 149, 237, 0.6), 0 0 60px rgba(100, 149, 237, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
         .timeline-item {
@@ -526,7 +525,7 @@
                         </div>
                     </a>
 
-                    <!-- GRWM (2024) -->
+                    <!-- GRWM (2022) -->
                     <a href="projets/projet_1/index.html" class="project-card" data-category="video">
                         <div class="project-thumbnail">
                             <img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/d37350197104915.662a83d294937.jpg"
@@ -535,8 +534,7 @@
                         <div class="project-info">
                             <span class="project-category">Court-métrage</span>
                             <h3 class="project-title">GRWM</h3>
-                            <p class="project-description">Direction Photo pour ce court-métrage primé plusieurs fois en
-                                festival.</p>
+                            <p class="project-description">Court-métrage 2022 (Festivals 2023).</p>
                         </div>
                     </a>
                 </div>
@@ -706,14 +704,19 @@
                         </a>
                     </div>
 
+                    <!-- 2022 -->
+                    <div class="timeline-year">
+                        <span class="timeline-year-badge">2022</span>
+                    </div>
+
                     <div class="timeline-item">
                         <a href="projets/projet_1/index.html" class="timeline-card">
                             <img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/d37350197104915.662a83d294937.jpg"
                                 alt="GRWM" class="timeline-card-image">
                             <div class="timeline-card-content">
                                 <span class="timeline-card-category">Court-métrage</span>
-                                <h3 class="timeline-card-title">GRWM</h3>
-                                <p class="timeline-card-description">Direction Photo - Primé en festival</p>
+                                <h3 class="timeline-card-title">GRWM (2022)</h3>
+                                <p class="timeline-card-description">Début des festivals 2023</p>
                             </div>
                         </a>
                     </div>

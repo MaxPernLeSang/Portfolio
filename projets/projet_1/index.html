@@ -16,154 +16,8 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="../../styles.css">
-    <style>
-        .project-page {
-            padding-top: 120px;
-            padding-bottom: var(--space-2xl);
-        }
-
-        /* Side by side layout for vertical image */
-        .project-hero-split {
-            display: grid;
-            grid-template-columns: 1fr 400px;
-            gap: var(--space-xl);
-            align-items: start;
-            margin-bottom: var(--space-xl);
-        }
-
-        .project-hero-text {
-            order: 1;
-        }
-
-        .project-hero-image-vertical {
-            order: 2;
-            position: sticky;
-            top: 100px;
-        }
-
-        .project-hero-image-vertical img {
-            width: 100%;
-            border-radius: var(--radius-lg);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-        }
-
-        @media (max-width: 900px) {
-            .project-hero-split {
-                grid-template-columns: 1fr;
-            }
-
-            .project-hero-image-vertical {
-                order: 1;
-                position: static;
-                max-width: 300px;
-                margin: 0 auto var(--space-lg);
-            }
-
-            .project-hero-text {
-                order: 2;
-            }
-        }
-
-        .project-meta {
-            display: flex;
-            gap: var(--space-lg);
-            margin: var(--space-lg) 0;
-            flex-wrap: wrap;
-        }
-
-        .project-meta-item {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        .project-meta-label {
-            color: var(--text-muted);
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .project-content p {
-            color: var(--text-secondary);
-            line-height: 1.8;
-            margin-bottom: var(--space-md);
-        }
-
-        .project-content h2 {
-            margin-top: var(--space-xl);
-            margin-bottom: var(--space-md);
-            font-size: 1.5rem;
-        }
-
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: var(--space-xs);
-            color: var(--text-secondary);
-            margin-bottom: var(--space-lg);
-            transition: color var(--transition-fast);
-        }
-
-        .back-link:hover {
-            color: var(--text-primary);
-        }
-
-        /* Credits Grid */
-        .credits-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: var(--space-md);
-            margin: var(--space-lg) 0;
-        }
-
-        .credit-item {
-            padding: var(--space-md);
-            background: var(--bg-card);
-            border-radius: var(--radius-md);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .credit-role {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 4px;
-        }
-
-        .credit-name {
-            color: var(--text-primary);
-            font-weight: 500;
-        }
-
-        /* Awards */
-        .awards-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: var(--space-sm);
-            margin: var(--space-lg) 0;
-        }
-
-        .award-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 8px 16px;
-            background: rgba(255, 215, 0, 0.1);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            border-radius: 20px;
-            font-size: 0.85rem;
-            color: #ffd700;
-        }
-
-        .award-badge.selection {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.2);
-            color: var(--text-secondary);
-        }
-    </style>
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body>
@@ -195,7 +49,7 @@
                     <div class="project-meta">
                         <div class="project-meta-item">
                             <span class="project-meta-label">Année</span>
-                            2024
+                            2022
                         </div>
                         <div class="project-meta-item">
                             <span class="project-meta-label">Production</span>
