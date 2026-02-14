@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Histoire - Maxime Périgny</title>
+    <meta name="description" content="L'histoire de mon parcours créatif.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        /* Story Specific Styles */
+        body {
+            background-color: #000;
+            /* Pure Black as requested */
+            color: var(--text-primary);
+        }
+
+        .story-container {
+            display: grid;
+            /* Overlapping layout */
+            grid-template-columns: 1fr;
+        }
+
+        /* Layer 1: Sticky Visuals */
+        .story-visuals {
+            grid-column: 1;
+            grid-row: 1;
+            position: sticky;
+            top: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #000;
+            z-index: 1;
+        }
+
+        .visual-item {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out, transform 0.8s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: scale(0.95);
+        }
+
+        .visual-item.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .visual-item img,
+        .visual-item video {
+            width: 70%;
+            /* User requested 70% */
+            height: 70vh;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+            transition: all 0.8s ease;
+        }
+
+        /* Focus Mode for Video */
+        .visual-item.focus img,
+        .visual-item.focus video {
+            width: 100%;
+            height: 100vh;
+            border-radius: 0;
+            object-fit: contain;
+            /* Show full video */
+            background: #000;
+        }
+
+        /* Layer 2: Scrolling Content */
+        .story-content {
+            grid-column: 1;
+            grid-row: 1;
+            position: relative;
+            z-index: 10;
+            pointer-events: none;
+            /* Let clicks pass through to visuals if needed, but enable text interaction */
+        }
+
+        .story-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+
+        /* Spacer for focus */
+        .story-section.spacer {
+            height: 150vh;
+            /* Long enough to watch */
+        }
+
+        /* Liquid Glass Card */
+        .story-card {
+            pointer-events: auto;
+            background: rgba(20, 20, 20, 0.4);
+            /* Darker semi-transparent */
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 3rem;
+            border-radius: 24px;
+            max-width: 500px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            transform: translateY(20px);
+            transition: transform 0.5s ease;
+        }
+
+        /* Add hover effect just for feel */
+        .story-card:hover {
+            transform: translateY(15px);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .story-year {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            line-height: 1;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .story-title {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .story-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+
+            .visual-item img,
+            .visual-item video {
+                width: 90%;
+                height: 50vh;
+            }
+
+            .visual-item.focus img,
+            .visual-item.focus video {
+                width: 100%;
+                height: 80vh;
+            }
+
+            .story-card {
+                padding: 1.5rem;
+                margin-top: 40vh;
+                /* Push text down on mobile so image is visible on top */
+                background: rgba(10, 10, 10, 0.8);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container nav-container">
+            <a href="index.html" class="nav-logo">MP</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="projects.html">Projets</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="story-container">
+        <!-- Visuals Container -->
+        <div class="story-visuals" id="visualsContainer">
+            <!-- Placeholder images/videos -->
+            <div class="visual-item" id="viz-start">
+                <!-- Just a black starter or intro image -->
+                <div style="background:var(--bg-dark); width:100%; height:100%;"></div>
+            </div>
+
+            <div class="visual-item" id="viz-1">
+                <img src="assets/thumbnails/drone.png" alt="Jeune passionné">
+                <div
+                    style="position:absolute; bottom:20px; left:20px; background:rgba(0,0,0,0.7); padding:5px; color:white;">
+                    (Placeholder: Moi jeune devant un ordi)</div>
+            </div>
+
+            <div class="visual-item" id="viz-2">
+                <img src="assets/thumbnails/explore_savoie.png" alt="Premier Projet">
+                <div
+                    style="position:absolute; bottom:20px; left:20px; background:rgba(0,0,0,0.7); padding:5px; color:white;">
+                    (Placeholder: Fin d'un gros projet)</div>
+            </div>
+
+            <div class="visual-item" id="viz-3">
+                <!-- Tour de l'Avenir Video -->
+                <video autoplay muted loop playsinline>
+                    <source
+                        src="https://res.cloudinary.com/dtwelbtjt/video/upload/v1770934153/Tour_de_avenir_summary_q9e7jp.mov"
+                        type="video/quicktime">
+                    <source
+                        src="https://res.cloudinary.com/dtwelbtjt/video/upload/v1770934153/Tour_de_avenir_summary_q9e7jp.mp4"
+                        type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div
+                    style="position:absolute; bottom:20px; left:20px; background:rgba(0,0,0,0.7); padding:5px; color:white;">
+                    Tour de l'Avenir 2025</div>
+            </div>
+        </div>
+
+        <!-- Scrolling Content -->
+        <div class="story-content">
+            <section class="story-section" data-target="viz-1">
+                <div class="story-card">
+                    <div class="story-year">2010</div>
+                    <h2 class="story-title">Les Débuts</h2>
+                    <p class="story-text">
+                        Tout a commencé dans ma chambre, fasciné par ce que je pouvais créer avec un simple ordinateur.
+                        Des heures passées à comprendre le montage, à tester des effets, à bidouiller mes premières
+                        vidéos.
+                        C'était le début d'une obsession.
+                    </p>
+                </div>
+            </section>
+
+            <section class="story-section" data-target="viz-2">
+                <div class="story-card">
+                    <div class="story-year">2018</div>
+                    <h2 class="story-title">La Révélation</h2>
+                    <p class="story-text">
+                        La fin de mon premier grand projet. Le sentiment de voir une idée prendre vie et toucher les
+                        gens.
+                        C'est à ce moment précis que j'ai su que je ne voulais pas seulement en faire un hobby, mais ma
+                        vie.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Video Section: Text First (Background Video) -->
+            <section class="story-section" data-target="viz-3">
+                <div class="story-card">
+                    <div class="story-year">2026</div>
+                    <h2 class="story-title">Aujourd'hui</h2>
+                    <p class="story-text">
+                        Vidéaste professionnel, je parcours les montagnes et les villes pour capturer l'essence de
+                        chaque
+                        instant.
+                        <br><br>
+                        (Continuez de scroller pour voir la vidéo en plein écran...)
+                    </p>
+                </div>
+            </section>
+
+            <!-- Video Focus Section: Video Foreground -->
+            <section class="story-section spacer" data-target="viz-3" data-focus="true">
+                <!-- Empty section to let the video shine -->
+            </section>
+
+            <section class="story-section" style="height: 50vh;">
+                <div class="story-card" style="text-align: center;">
+                    <h2 class="story-title">La suite ?</h2>
+                    <p class="story-text">
+                        Écrivons-la ensemble.
+                    </p>
+                    <br>
+                    <a href="contact.html" class="btn btn-primary">Me contacter</a>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Simple script to handle scroll transitions
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.story-section');
+            const visuals = document.querySelectorAll('.visual-item');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '-40% 0px -40% 0px', // Trigger when section is in middle of screen
+                threshold: 0
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const targetId = entry.target.getAttribute('data-target');
+                        const isFocus = entry.target.getAttribute('data-focus') === 'true';
+
+                        if (targetId) {
+                            // 1. Activate Visual
+                            visuals.forEach(v => v.classList.remove('active'));
+                            const target = document.getElementById(targetId);
+                            if (target) {
+                                target.classList.add('active');
+
+                                // 2. Handle Focus State
+                                if (isFocus) {
+                                    target.classList.add('focus');
+                                    // Optional: Unmute if it's a video
+                                    const vid = target.querySelector('video');
+                                    if (vid) vid.muted = false;
+                                } else {
+                                    target.classList.remove('focus');
+                                    // Mute back
+                                    const vid = target.querySelector('video');
+                                    if (vid) vid.muted = true;
+                                }
+                            }
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+
+</html>
