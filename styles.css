@@ -1015,6 +1015,25 @@ h3 {
 
 /* ----- Reel Container ----- */
 
+.post-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.post-container iframe {
+  width: 100%;
+  min-height: 550px;
+  border: none;
+  aspect-ratio: 4/5;
+}
+
 .reel-container {
   position: relative;
   width: 100%;
