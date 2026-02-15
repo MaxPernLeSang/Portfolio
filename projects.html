@@ -22,7 +22,7 @@
         .view-toggle {
             display: flex;
             justify-content: center;
-            margin-bottom: var(--space-xl);
+            margin-bottom: var(--space-sm);
         }
 
         .toggle-switch {
@@ -110,7 +110,7 @@
             position: relative;
             max-width: 1000px;
             margin: 0 auto;
-            padding: 0 0 var(--space-xl) 0;
+            padding: 0 0 var(--space-md) 0;
         }
 
         .timeline::before {
@@ -133,7 +133,7 @@
             position: relative;
             display: flex;
             justify-content: center;
-            margin: var(--space-xl) 0;
+            margin: var(--space-md) 0;
         }
 
         .timeline-year:first-child {
@@ -167,7 +167,7 @@
         .timeline-item {
             position: relative;
             width: 50%;
-            padding: var(--space-lg);
+            padding: var(--space-sm);
             opacity: 0;
             transform: translateY(30px);
             transition: all 0.6s ease;
@@ -180,20 +180,20 @@
 
         .timeline-item:nth-child(odd) {
             left: 0;
-            padding-right: calc(var(--space-xl) + 30px);
+            padding-right: calc(var(--space-md) + 20px);
             text-align: right;
         }
 
         .timeline-item:nth-child(even) {
             left: 50%;
-            padding-left: calc(var(--space-xl) + 30px);
+            padding-left: calc(var(--space-md) + 20px);
             text-align: left;
         }
 
         .timeline-item::before {
             content: '';
             position: absolute;
-            top: calc(var(--space-lg) + 20px);
+            top: calc(var(--space-sm) + 20px);
             width: 16px;
             height: 16px;
             background: #6495ed;

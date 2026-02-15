@@ -348,7 +348,7 @@ h3 {
   display: flex;
   justify-content: center;
   gap: var(--space-sm);
-  margin-bottom: var(--space-xl);
+  margin-bottom: var(--space-md);
   flex-wrap: wrap;
 }
 
@@ -410,7 +410,7 @@ h3 {
    ================================ */
 
 .projects-section {
-  padding: var(--space-2xl) 0;
+  padding: var(--space-md) 0;
   background: var(--bg-primary);
 }
 
@@ -612,8 +612,8 @@ h3 {
    ================================ */
 
 .page-header {
-  padding-top: 120px;
-  padding-bottom: var(--space-xl);
+  padding-top: 100px;
+  padding-bottom: var(--space-md);
 }
 
 .page-title {
