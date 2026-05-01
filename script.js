@@ -1,4 +1,5 @@
 // Portfolio - JavaScript
+
 document.addEventListener('DOMContentLoaded', () => {
   // Intersection Observer for scroll animations
   const observerOptions = {
@@ -220,64 +221,40 @@ document.addEventListener('DOMContentLoaded', () => {
     const projectId = match ? match[1] : null;
     const previewPath = card.dataset.preview || (projectId ? `assets/previews/${projectId}.mp4` : null);
 
-    // Check if thumbnail is a YouTube image to extract ID
-    const thumbnailImg = card.querySelector('.project-thumbnail img, .timeline-card-image');
-    let ytId = null;
-    if (thumbnailImg && thumbnailImg.tagName === 'IMG' && thumbnailImg.src.includes('i.ytimg.com/vi/')) {
-      const ytMatch = thumbnailImg.src.match(/\/vi\/([^\/]+)/);
-      if (ytMatch) ytId = ytMatch[1];
-    }
-
     card.addEventListener('mouseenter', () => {
-      if (hasError) return;
+      if (hasError || !previewPath) return;
 
       if (!video) {
-        if (ytId) {
-          // 1. YouTube Preview
-          video = document.createElement('iframe');
-          video.src = `https://www.youtube.com/embed/${ytId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${ytId}&playsinline=1&modestbranding=1&rel=0`;
-          video.className = 'project-preview-video';
-          video.style.border = 'none';
-          
-          // YouTube force l'affichage de l'UI pendant les 3 premières secondes.
-          // On zoom fortement (scale 1.5) pour pousser l'UI en dehors du cadre visible (.project-thumbnail a overflow:hidden)
-          video.style.transform = 'scale(1.5)'; 
-          
-          video.onload = () => {
-            video.classList.add('active');
-          };
-          
-          const thumbnail = card.querySelector('.project-thumbnail') || (card.classList.contains('timeline-card') ? (card.style.position = 'relative', card) : card);
-          if (thumbnail) thumbnail.appendChild(video);
-        } else if (previewPath) {
-          // 2. MP4 Preview
-          video = document.createElement('video');
-          video.src = previewPath;
-          video.className = 'project-preview-video';
-          video.muted = true;
-          video.loop = true;
-          video.playsInline = true;
+        // MP4 Preview
+        video = document.createElement('video');
+        video.src = previewPath;
+        video.className = 'project-preview-video';
+        video.muted = true;
+        video.loop = true;
+        video.playsInline = true;
 
-          video.addEventListener('loadeddata', () => {
-            video.classList.add('active');
-            video.play().catch(e => console.log('Preview playback failed:', e));
-          });
+        video.addEventListener('loadeddata', () => {
+          // Si la vidéo est verticale, on utilise contain pour ne pas la couper
+          if (video.videoHeight > video.videoWidth) {
+            video.style.objectFit = 'contain';
+          }
+          
+          video.classList.add('active');
+          video.play().catch(e => console.log('Preview playback failed:', e));
+        });
 
-          video.addEventListener('error', () => {
-            hasError = true;
-            video.remove();
-            video = null;
-          });
+        video.addEventListener('error', () => {
+          hasError = true;
+          video.remove();
+          video = null;
+        });
 
-          const thumbnail = card.querySelector('.project-thumbnail') || (card.classList.contains('timeline-card') ? (card.style.position = 'relative', card) : card);
-          if (thumbnail) thumbnail.appendChild(video);
-        }
+        const thumbnail = card.querySelector('.project-thumbnail') || (card.classList.contains('timeline-card') ? (card.style.position = 'relative', card) : card);
+        if (thumbnail) thumbnail.appendChild(video);
       } else {
         // Video already exists
-        if (video.tagName === 'VIDEO') {
-          video.currentTime = 0;
-          video.play().catch(e => { });
-        }
+        video.currentTime = 0;
+        video.play().catch(e => { });
         video.classList.add('active');
       }
     });
@@ -287,13 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
         video.classList.remove('active');
         setTimeout(() => {
           if (video && !video.classList.contains('active')) {
-            if (video.tagName === 'VIDEO') {
-              video.pause();
-            } else {
-              // For iframe (YouTube), remove it to stop playing in background
-              video.remove();
-              video = null;
-            }
+            video.pause();
           }
         }, 400); // Wait for fade out
       }
