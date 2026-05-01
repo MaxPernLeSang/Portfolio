@@ -1,0 +1,401 @@
+/* story.css - Specific to the Mon Histoire 12-step page */
+
+body.story-page {
+    --bg-dark: #000000;
+    --acc-green: #39ff14;
+    --text-light: #ffffff;
+    --font-main: 'Inter', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    font-family: var(--font-main);
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+/* === UNIVERSAL PIN SYSTEM INITIAL STATES === */
+/* GSAP will animate these in and out */
+.story-bg {
+    opacity: 0;
+    transform: scale(1.08) translateZ(0);
+}
+.story-text-el {
+    opacity: 0;
+    /* No transform on Y here — GSAP will set it from y:60 → y:0 using 'y' not transform */
+    position: absolute;
+    z-index: 10;
+    padding: 0 2rem;
+    text-align: center;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.8);
+    width: 100%;
+    /* Isolate text from GPU layer to prevent subpixel blur */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Framed Background Images (non-fullscreen) */
+.story-bg.bg-image {
+    /* Override the absolute fullscreen default with a centered card */
+    width: 72vw;
+    height: 72vh;
+    top: 50%;
+    left: 50%;
+    transform: translateZ(0) scale(1.08); /* translate(-50%, -50%) handled strictly by GSAP to avoid double shifting */
+    border-radius: 20px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+    background-attachment: local;
+}
+/* Keep fullscreen override for S11 and S12 */
+.story-bg.bg-image.fullscreen {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    transform: translateZ(0) scale(1.08);
+    border-radius: 0;
+    box-shadow: none;
+}
+
+body.story-page nav.nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+}
+
+body.story-page h1, body.story-page h2 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    font-size: clamp(2rem, 5vw, 5rem);
+    text-align: center;
+    z-index: 10;
+    position: relative;
+    max-width: 80%;
+    margin: 0 auto;
+    color: #fff;
+}
+
+/* Basic Layout & Panels */
+.panel {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background: #000000;
+}
+
+/* GPU Hardware Acceleration — only on background elements, NOT text (avoids subpixel blur) */
+.bg-grid, .computer-half, .nature-half, .progress-bar, .bg-parallax, .bg-blur-spufad, .bg-mask, .bg-neon-flashes, .bg-video-full, .bg-image, .bg-wipe-container, .parallax-wrap, .story-bg {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+}
+
+.content {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.bg-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+}
+
+/* Framed / Floating Aesthetic Logic */
+.bg-image.framed, .bg-wipe-container.framed, .parallax-wrap.framed {
+    top: 50%;
+    left: 50%;
+    width: 75vw;
+    height: 75vh;
+    border-radius: 24px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+    /* GSAP will set xPercent: -50, yPercent: -50 for centering */
+}
+
+/* Fullscreen intent */
+.bg-image.fullscreen, .bg-video-full.fullscreen {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+/* Section 1 : L'Origine */
+.bg-grid {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-size: 50px 50px;
+    background-image: 
+      linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+    z-index: 1;
+    opacity: 0;
+}
+.fade-text {
+    opacity: 0;
+    color: #fff;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+/* Section 2 : Le Dual-Core */
+.bg-wipe-container {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 1;
+    display: flex;
+    overflow: hidden; /* Important for clip paths to respect frame */
+}
+.bg-half {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-size: cover;
+    background-position: center;
+}
+.nature-half {
+    z-index: 1;
+    filter: brightness(0.7);
+}
+.computer-half {
+    z-index: 2;
+    filter: sepia(0.8) hue-rotate(90deg) contrast(1.2);
+    clip-path: inset(0 0 0 0);
+}
+.slide-out-text {
+    opacity: 0;
+}
+
+/* Section 3 : L'Endurance */
+.progress-bar-container {
+    position: absolute;
+    top: 50%; left: 0; width: 100%; height: 4px;
+    background: rgba(255,255,255,0.1);
+    z-index: 5;
+    transform: translateY(-50%);
+}
+.progress-bar {
+    width: 100%; /* Hardware accelerated scaling vs width animating */
+    height: 100%;
+    background: #fff;
+    transform: scaleX(0);
+    transform-origin: left;
+}
+.zoom-in-text {
+    transform: scale(0.5);
+    opacity: 0;
+}
+.bg-marathon {
+    filter: brightness(0.4);
+}
+
+/* Section 3.5 : La Fierté */
+.bg-podium {
+    /* Set initial blur for the universal fade-in. Wait, the GSAP custom timeline will set it anyway, but putting it here prevents FOUC */
+    filter: blur(35px) brightness(0.4);
+}
+.circle-rouge {
+    position: absolute;
+    width: clamp(140px, 16vw, 200px);
+    aspect-ratio: 1/1;
+    border: 6px solid #ff0033;
+    border-radius: 50%;
+    top: 43%;
+    left: 65%;
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    z-index: 20;
+    pointer-events: none;
+    will-change: transform, opacity;
+}
+
+/* Section 4 : La Route (Parallaxe) */
+.parallax-wrap {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    overflow: hidden;
+    z-index: 1;
+}
+.bg-parallax {
+    height: 120%;
+    top: -10%;
+    filter: grayscale(100%) contrast(1.2) brightness(0.5);
+}
+.blur-text {
+    filter: blur(20px);
+    opacity: 0;
+}
+
+/* Section 5 : La Technique */
+.typing-text {
+    font-family: 'Courier New', Courier, monospace;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+    min-height: 3em; 
+}
+.bg-nodes {
+    background-size: cover;
+    filter: brightness(0.2) contrast(1.5);
+    opacity: 0.2;
+}
+
+/* Section 6 : Le SPUFAD */
+.bg-blur-spufad {
+    filter: blur(30px) brightness(0.4);
+}
+.tilt-text-container {
+    perspective: 1000px;
+}
+.tilt-text {
+    transform: rotateY(30deg) rotateX(10deg);
+    opacity: 0;
+}
+
+/* Section 7 : L'Innovation */
+.bg-video, .bg-video-full {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%; min-height: 100%;
+    z-index: 1;
+    object-fit: cover;
+    opacity: 0.4;
+}
+.split-text {
+    display: flex;
+    justify-content: center;
+}
+body.story-page .story-title-container {
+    width: 100%;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+    padding: 0 2rem;
+    pointer-events: none; /* Let clicks pass through to interactive bgs */
+}
+body.story-page .story-subtitle {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(1.2rem, 2.5vw, 2.2rem);
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.85);
+    text-shadow: 0 4px 20px rgba(0,0,0,0.9);
+}
+body.story-page .story-main-title {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(3.5rem, 8vw, 8rem);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    color: #fff;
+    text-shadow: 0 10px 40px rgba(0,0,0,0.9);
+    display: inline-block;
+    margin-top: 0.05em;
+    line-height: 0.95;
+}
+
+/* Section 8 : Le Regard */
+.film-grain {
+    position: absolute;
+    top: -50%; left: -50%; width: 200%; height: 200%;
+    background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+    opacity: 0.08;
+    z-index: 3;
+    animation: grain 0.5s steps(2) infinite;
+    pointer-events: none;
+}
+@keyframes grain {
+    0%, 100% { transform: translate(0, 0); }
+    10% { transform: translate(-2%, -2%); }
+    30% { transform: translate(1%, -2%); }
+    50% { transform: translate(-1%, 2%); }
+    70% { transform: translate(2%, 1%); }
+    90% { transform: translate(-1%, 1%); }
+}
+.bg-mask {
+    /* No initial clip-path here — GSAP ScrollTrigger animates circle size on scroll */
+    z-index: 2;
+    filter: brightness(0.6);
+}
+
+/* Section 9 : L'Implication */
+.bg-empty-room {
+    filter: brightness(0.4);
+}
+
+/* Section 10 : La Diffusion */
+.stagger-text {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.3em;
+}
+.stagger-word {
+    opacity: 0;
+}
+.bg-neon-flashes {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at 50% 50%, rgba(255, 0, 150, 0.4), transparent 70%);
+    opacity: 0;
+    z-index: 2;
+    mix-blend-mode: screen;
+}
+.bg-nuit {
+    filter: brightness(0.6);
+}
+
+/* Section 11 : L'Aboutissement */
+.scale-text {
+    transform: scale(0.1);
+    opacity: 0;
+}
+.text-shadow-dark {
+    text-shadow: 0 5px 30px rgba(0,0,0,0.9);
+}
+
+/* Section 12 : Le Rôle */
+.pinning-panel {
+    height: 100vh;
+    display: block;
+}
+.pinning-content {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 10;
+}
+.sticky-text {
+    font-size: clamp(3rem, 8vw, 8rem);
+    text-shadow: 0 2px 20px rgba(0,0,0,0.8);
+}
+
+/* Accessibility: Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
