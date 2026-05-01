@@ -238,7 +238,10 @@ document.addEventListener('DOMContentLoaded', () => {
           video.src = `https://www.youtube.com/embed/${ytId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${ytId}&playsinline=1&modestbranding=1&rel=0`;
           video.className = 'project-preview-video';
           video.style.border = 'none';
-          video.style.transform = 'scale(1.2)'; // Scale to hide black bars on 16:10 container
+          
+          // YouTube force l'affichage de l'UI pendant les 3 premières secondes.
+          // On zoom fortement (scale 1.5) pour pousser l'UI en dehors du cadre visible (.project-thumbnail a overflow:hidden)
+          video.style.transform = 'scale(1.5)'; 
           
           video.onload = () => {
             video.classList.add('active');
