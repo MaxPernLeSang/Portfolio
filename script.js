@@ -219,9 +219,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // Extract folder name e.g. "projet_12"
     const match = link.match(/projets\/(.*?)\//);
     const projectId = match ? match[1] : null;
-    const previewPath = card.dataset.preview || (projectId ? `assets/previews/${projectId}.mp4` : null);
+    let previewPath = card.dataset.preview || (projectId ? `assets/previews/${projectId}.mp4` : null);
+
+    // Ajustement dynamique de la qualité vidéo pour mobile vs desktop
+    if (previewPath && previewPath.includes('res.cloudinary.com')) {
+      const isMobile = window.innerWidth <= 768 || window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+      if (isMobile) {
+        // Compression extrême et basse résolution pour mobile
+        previewPath = previewPath.replace('/upload/', '/upload/q_auto:eco,w_300,');
+      } else {
+        // Bonne qualité pour desktop
+        previewPath = previewPath.replace('/upload/', '/upload/q_auto:good,w_800,');
+      }
+    }
 
     card.playPreview = () => {
+      card.wantsToPlay = true;
       if (hasError || !previewPath) return;
 
       if (!video) {
@@ -234,6 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
         video.playsInline = true;
 
         video.addEventListener('loadeddata', () => {
+          if (!card.wantsToPlay) return; // Ne pas jouer si l'élément n'est plus actif
           if (video.videoHeight > video.videoWidth) {
             video.style.objectFit = 'contain';
           }
@@ -250,6 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const thumbnail = card.querySelector('.project-thumbnail') || (card.classList.contains('timeline-card') ? (card.style.position = 'relative', card) : card);
         if (thumbnail) thumbnail.appendChild(video);
       } else {
+        if (!card.wantsToPlay) return;
         video.currentTime = 0;
         video.play().catch(e => { });
         video.classList.add('active');
@@ -257,6 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     card.stopPreview = () => {
+      card.wantsToPlay = false;
       if (video) {
         video.classList.remove('active');
         setTimeout(() => {
