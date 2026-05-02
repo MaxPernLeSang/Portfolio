@@ -221,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const projectId = match ? match[1] : null;
     const previewPath = card.dataset.preview || (projectId ? `assets/previews/${projectId}.mp4` : null);
 
-    card.addEventListener('mouseenter', () => {
+    card.playPreview = () => {
       if (hasError || !previewPath) return;
 
       if (!video) {
@@ -234,11 +234,9 @@ document.addEventListener('DOMContentLoaded', () => {
         video.playsInline = true;
 
         video.addEventListener('loadeddata', () => {
-          // Si la vidéo est verticale, on utilise contain pour ne pas la couper
           if (video.videoHeight > video.videoWidth) {
             video.style.objectFit = 'contain';
           }
-          
           video.classList.add('active');
           video.play().catch(e => console.log('Preview playback failed:', e));
         });
@@ -252,14 +250,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const thumbnail = card.querySelector('.project-thumbnail') || (card.classList.contains('timeline-card') ? (card.style.position = 'relative', card) : card);
         if (thumbnail) thumbnail.appendChild(video);
       } else {
-        // Video already exists
         video.currentTime = 0;
         video.play().catch(e => { });
         video.classList.add('active');
       }
-    });
+    };
 
-    card.addEventListener('mouseleave', () => {
+    card.stopPreview = () => {
       if (video) {
         video.classList.remove('active');
         setTimeout(() => {
@@ -268,8 +265,30 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         }, 400); // Wait for fade out
       }
-    });
+    };
+
+    // Pour desktop (souris)
+    card.addEventListener('mouseenter', card.playPreview);
+    card.addEventListener('mouseleave', card.stopPreview);
   });
+
+  // Pour mobile (tactile), on utilise l'IntersectionObserver pour lire la vidéo quand elle est au centre de l'écran
+  const isTouchDevice = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+  if (isTouchDevice) {
+    const previewObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.playPreview();
+        } else {
+          entry.target.stopPreview();
+        }
+      });
+    }, { threshold: 0.6 });
+
+    document.querySelectorAll('.project-card, .timeline-card').forEach(card => {
+      previewObserver.observe(card);
+    });
+  }
 
   // ================================
   // CUSTOM CURSOR
