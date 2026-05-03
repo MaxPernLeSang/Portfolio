@@ -92,135 +92,149 @@
             </a>
 
             <div class="project-hero">
-                <!-- Video Embed -->
+                <!-- Video Embed (Teaser) -->
                 <div class="project-video">
-                    <iframe src="https://www.youtube.com/embed/rMDX8-5Z21k" title="DaVinci l'Expérience - Radio-Canada"
+                    <iframe src="https://www.youtube.com/embed/rMDX8-5Z21k" title="DaVinci l'Expérience - Teaser"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         allowfullscreen>
                     </iframe>
                 </div>
-
-                <div class="badge-ai">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="3" />
-                        <path d="M12 2v4m0 12v4M2 12h4m12 0h4" />
-                        <path d="m4.93 4.93 2.83 2.83m8.48 8.48 2.83 2.83m0-14.14-2.83 2.83m-8.48 8.48-2.83 2.83" />
-                    </svg>
-                    Expérience Interactive avec IA
-                </div>
-
-                <h1 class="page-title">DaVinci l'Expérience</h1>
-
-                <div class="project-meta">
-                    <div class="project-meta-item">
-                        <span class="project-meta-label">Année</span>
-                        2024
-                    </div>
-                    <div class="project-meta-item">
-                        <span class="project-meta-label">Contexte</span>
-                        Projet de Maîtrise - UQAT
-                    </div>
-                    <div class="project-meta-item">
-                        <span class="project-meta-label">Type</span>
-                        Experience Design
-                    </div>
-                </div>
             </div>
 
-            <div class="project-content">
-                <div class="synopsis-with-video">
-                    <div class="synopsis-text">
+            <div class="project-layout">
+                <!-- COLONNE GAUCHE: INFO -->
+                <div class="project-info-side">
+                    <div class="badge-ai" style="margin-bottom: var(--space-sm);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3" />
+                            <path d="M12 2v4m0 12v4M2 12h4m12 0h4" />
+                            <path d="m4.93 4.93 2.83 2.83m8.48 8.48 2.83 2.83m0-14.14-2.83 2.83m-8.48 8.48-2.83 2.83" />
+                        </svg>
+                        Expérience Interactive avec IA
+                    </div>
+
+                    <h1 class="page-title" style="margin-top:0;">DaVinci l'Expérience</h1>
+
+                    <div class="project-meta">
+                        <div class="project-meta-item">
+                            <span class="project-meta-label">Année</span>
+                            2024
+                        </div>
+                        <div class="project-meta-item">
+                            <span class="project-meta-label">Contexte</span>
+                            Projet de Maîtrise - UQAT
+                        </div>
+                        <div class="project-meta-item">
+                            <span class="project-meta-label">Type</span>
+                            Experience Design
+                        </div>
+                    </div>
+
+                    <div class="project-content" style="max-width: 100%; margin-top: var(--space-md);">
                         <p class="project-synopsis">
                             Une expérience immersive impliquant l'intelligence artificielle avec une esthétique des années
                             1980/90.
+                        </p>
+                        <p>
                             Les utilisateurs communiquent textuellement avec "DaVinci" pour explorer des questions sur
                             l'IA, l'environnement et l'éducation.
                         </p>
-                    </div>
-                    
-                    <div class="synopsis-video">
-                        <div class="custom-video-player">
-                            <video id="interviewVideo" preload="metadata">
-                                <source src="https://res.cloudinary.com/dtwelbtjt/video/upload/v1777825524/Radio-Canada-Interview-Alde-Maxime_cq6ak0.mov" type="video/mp4">
-                            </video>
-                            <div class="video-overlay">
-                                <button class="play-pause-btn" id="playPauseBtn">
-                                    <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M8 5v14l11-7z"/>
-                                    </svg>
-                                    <svg class="pause-icon" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-                                    </svg>
-                                </button>
-                            </div>
-                            <div class="video-controls">
-                                <button class="play-pause-small" id="playPauseSmall">
-                                    <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M8 5v14l11-7z"/>
-                                    </svg>
-                                    <svg class="pause-icon" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-                                    </svg>
-                                </button>
-                                <div class="video-progress">
-                                    <div class="progress-bar" id="progressBar">
-                                        <div class="progress-filled" id="progressFilled"></div>
-                                    </div>
-                                </div>
-                                <span class="video-time" id="videoTime">0:00 / 0:00</span>
-                                <button class="volume-btn" id="volumeBtn">
-                                    <svg class="volume-high" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-                                    </svg>
-                                    <svg class="volume-muted" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
-                                    </svg>
-                                </button>
-                                <button class="fullscreen-btn" id="fullscreenBtn">
-                                    <svg viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
-                                    </svg>
-                                </button>
-                            </div>
+                        <p>
+                            <strong>Communication :</strong> Vulgariser les enjeux de l'IA et rendre la technologie accessible
+                            et informative.<br>
+                            <strong>Curiosité :</strong> Embrasser les technologies en évolution rapide comme partie de notre
+                            identité d'équipe.
+                        </p>
+
+                        <h2>Faits Saillants</h2>
+                        <div class="highlights-list" style="margin-bottom: var(--space-lg);">
+                            <span class="highlight-badge">📡 Radio-Canada - Des Matins en Or</span><br>
+                            <span class="highlight-badge">🎭 RIMA - Rencontres Internationales du Multimédia</span><br>
+                            <span class="highlight-badge">🌃 La Nuit Blanche de Rouyn-Noranda</span><br>
+                            <span class="highlight-badge">🎓 Projet de Maîtrise - UQAT</span>
+                        </div>
+
+                        <h2>Technologies</h2>
+                        <div class="tools-list" style="margin-bottom: var(--space-lg);">
+                            <span class="tool-badge">🎮 Unity</span>
+                            <span class="tool-badge">🎬 DaVinci Resolve</span>
+                            <span class="tool-badge">🤖 Ollama</span>
+                        </div>
+
+                        <h2>Équipe</h2>
+                        <div class="team-list">
+                            <div class="team-badge">Maxime Périgny</div>
+                            <div class="team-badge">Alexandre Demers-Roberge</div>
+                        </div>
+
+                        <h2>Tags</h2>
+                        <div class="skills-list">
+                            <span class="skill-badge">IA</span>
+                            <span class="skill-badge">Interactif</span>
+                            <span class="skill-badge">Design</span>
+                        </div>
+
+                        <div style="margin-top: var(--space-xl);">
+                            <a href="https://www.youtube.com/watch?v=rMDX8-5Z21k" target="_blank" class="btn btn-primary">
+                                Voir l'entrevue complète →
+                            </a>
                         </div>
                     </div>
                 </div>
-                
-                <p>
-                    <strong>Communication :</strong> Vulgariser les enjeux de l'IA et rendre la technologie accessible
-                    et informative.<br>
-                    <strong>Curiosité :</strong> Embrasser les technologies en évolution rapide comme partie de notre
-                    identité d'équipe.
-                </p>
 
-                <h2>📺 Faits Saillants</h2>
-                <div class="highlights-list">
-                    <span class="highlight-badge">📡 Radio-Canada - Des Matins en Or</span>
-                    <br>
-                    <span class="highlight-badge">🎭 RIMA - Rencontres Internationales du Multimédia</span>
-                    <br>
-                    <span class="highlight-badge">🌃 La Nuit Blanche de Rouyn-Noranda - 1ère édition</span>
-                    <br>
-                    <span class="highlight-badge">🎓 Projet de Maîtrise - UQAT</span>
-                </div>
+                <!-- COLONNE DROITE: MEDIA -->
+                <div class="project-media">
+                    <div class="instagram-badge">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/>
+                        </svg>
+                        Radio-Canada Interview
+                    </div>
 
-                <h2>🛠️ Technologies Utilisées</h2>
-                <div class="tools-list">
-                    <span class="tool-badge">🎮 Unity</span>
-                    <span class="tool-badge">🎬 DaVinci Resolve</span>
-                    <span class="tool-badge">🤖 Ollama</span>
-                </div>
-
-                <h2>👥 Équipe</h2>
-                <div class="team-list">
-                    <div class="team-badge">Maxime Périgny</div>
-                    <div class="team-badge">Alexandre Demers-Roberge</div>
-                </div>
-
-                <div style="display: flex; justify-content: flex-end; margin-top: var(--space-xl);">
-                    <a href="https://www.youtube.com/watch?v=rMDX8-5Z21k" target="_blank" class="btn btn-primary">
-                        Voir l'entrevue Radio-Canada →
-                    </a>
+                    <div class="custom-video-player">
+                        <video id="interviewVideo" preload="metadata" style="aspect-ratio: 9/16; object-fit: cover;">
+                            <source src="https://res.cloudinary.com/dtwelbtjt/video/upload/v1777830191/Radio-Canada-Interview-Alde-Maxime_ztqlyl.mov" type="video/mp4">
+                        </video>
+                        <div class="video-overlay">
+                            <button class="play-pause-btn" id="playPauseBtn">
+                                <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                                <svg class="pause-icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="video-controls">
+                            <button class="play-pause-small" id="playPauseSmall">
+                                <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                                <svg class="pause-icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                                </svg>
+                            </button>
+                            <div class="video-progress">
+                                <div class="progress-bar" id="progressBar">
+                                    <div class="progress-filled" id="progressFilled"></div>
+                                </div>
+                            </div>
+                            <span class="video-time" id="videoTime">0:00 / 0:00</span>
+                            <button class="volume-btn" id="volumeBtn">
+                                <svg class="volume-high" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                                </svg>
+                                <svg class="volume-muted" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+                                </svg>
+                            </button>
+                            <button class="fullscreen-btn" id="fullscreenBtn">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

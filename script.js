@@ -516,10 +516,121 @@ document.addEventListener('DOMContentLoaded', () => {
 
     timelineYears.forEach(year => yearObserver.observe(year));
   }
+
+  // ================================
+  // TAG MODAL SYSTEM
+  // ================================
+  
+  const PROJECTS_DATABASE = [
+    { id: "projet_18", title: "Freeride Qualifier 4☆", category: "Sport", tags: ["Sport", "Événement", "Prise de vue"], thumb: "https://i.ytimg.com/vi/YR2tEMqG_XM/hqdefault.jpg" },
+    { id: "projet_17", title: "Coucou La Rosière Vlog", category: "Vlog", tags: ["Vlog", "Websérie", "Montage"], thumb: "https://i.ytimg.com/vi/lX4GxFVD1zQ/hqdefault.jpg" },
+    { id: "projet_16", title: "Le décor est posé", category: "Nature", tags: ["Nature", "Social Media", "Montage"], thumb: "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/d37350197104915.662a83d294937.jpg" },
+    { id: "projet_15", title: "Coucou La Rosière FAQ", category: "Websérie", tags: ["Websérie", "FAQ", "Social Media"], thumb: "https://i.ytimg.com/vi/1dzWt-Lpazg/hqdefault.jpg" },
+    { id: "projet_14", title: "Tour de l'Avenir 2025", category: "Cyclisme", tags: ["Cyclisme", "Reportage", "Prise de vue"], thumb: "projets/projet_14/DSC05861.jpg" },
+    { id: "projet_13", title: "Site Officiel La Rosière", category: "Contenu Web", tags: ["Contenu Web", "Photographie", "Prise de vue"], thumb: "assets/thumbnails/la_rosiere_site_v2.png" },
+    { id: "projet_12", title: "Explore Savoie", category: "Websérie", tags: ["Websérie", "Montagne", "Prise de vue"], thumb: "assets/thumbnails/explore_savoie_video.jpeg" },
+    { id: "projet_11", title: "Les Matins Nostalgie", category: "Événement", tags: ["Événement", "Prise de vue", "Photographie"], thumb: "assets/thumbnails/nostalgie.png" },
+    { id: "projet_10", title: "Dameuse La Rosière", category: "Social Media", tags: ["Montagne", "Social Media", "Montage"], thumb: "assets/thumbnails/dameuse.png" },
+    { id: "projet_9", title: "Vue Drone La Rosière", category: "Drone", tags: ["Drone", "Paysage", "Social Media"], thumb: "assets/thumbnails/drone.png" },
+    { id: "projet_8", title: "Tennis La Rosière", category: "Sport", tags: ["Sport", "Social Media", "Montage"], thumb: "assets/thumbnails/tennis.png" },
+    { id: "projet_7", title: "Trail Blanc La Rosière", category: "Sport", tags: ["Sport", "Événement", "Montage"], thumb: "https://i.ytimg.com/vi/wIfZ9nyZeyE/maxresdefault.jpg" },
+    { id: "projet_6", title: "Last Man Riding", category: "Sport", tags: ["Sport", "Événement", "Montage"], thumb: "https://i.ytimg.com/vi/wraUG-eyWt4/maxresdefault.jpg" },
+    { id: "projet_5", title: "Tour de l'Abitibi 2024", category: "Sport", tags: ["Cyclisme", "Sport", "Prise de vue"], thumb: "https://mir-s3-cdn-cf.behance.net/project_modules/1400/859133208608647.66f1bd54e0d03.jpg" },
+    { id: "projet_4", title: "Réussir Autrement", category: "Portraits", tags: ["Portraits", "Social", "Montage"], thumb: "https://mir-s3-cdn-cf.behance.net/project_modules/1400/dc0890205601801.66bdcf8489032.png" },
+    { id: "projet_3", title: "DaVinci l'Expérience", category: "Interactif", tags: ["IA", "Interactif", "Design"], thumb: "https://mir-s3-cdn-cf.behance.net/project_modules/1400/3cc018205524947.66bc87830dbda.jpg" },
+    { id: "projet_2", title: "Table Forêt", category: "Nature", tags: ["360°", "Nature", "Expérience"], thumb: "https://mir-s3-cdn-cf.behance.net/project_modules/1400/8c0677205524451.66bc86ec55799.jpg" },
+    { id: "projet_1", title: "GRWM", category: "Court-métrage", tags: ["Court-métrage", "Festivals", "Réalisation"], thumb: "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/d37350197104915.662a83d294937.jpg" }
+  ];
+
+  // Create Modal Structure
+  const modalHTML = `
+    <div class="tag-modal-overlay" id="tagModal">
+      <div class="tag-modal-container">
+        <div class="tag-modal-close" id="closeTagModal">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </div>
+        <div class="tag-modal-header">
+          <span class="tag-modal-label">Projets liés au tag</span>
+          <h2 class="tag-modal-title" id="tagModalTitle">Tag Name</h2>
+        </div>
+        <div class="tag-results-grid" id="tagResultsGrid">
+          <!-- Results injected here -->
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+  const tagModal = document.getElementById('tagModal');
+  const tagModalTitle = document.getElementById('tagModalTitle');
+  const tagResultsGrid = document.getElementById('tagResultsGrid');
+  const closeTagModal = document.getElementById('closeTagModal');
+
+  // Detect if we are in a subfolder (projets/projet_x/)
+  const isSubfolder = window.location.pathname.includes('/projets/');
+  const pathPrefix = isSubfolder ? '../../' : '';
+
+  function openTagModal(tagName) {
+    tagModalTitle.textContent = tagName;
+    tagResultsGrid.innerHTML = '';
+
+    const filteredProjects = PROJECTS_DATABASE.filter(p => p.tags.includes(tagName));
+
+    filteredProjects.forEach(project => {
+      const card = document.createElement('a');
+      card.href = pathPrefix + "projets/" + project.id + "/index.html";
+      card.className = 'tag-result-card';
+      
+      // Fix thumb path
+      let thumbSrc = project.thumb;
+      if (!thumbSrc.startsWith('http') && !thumbSrc.startsWith('/')) {
+        thumbSrc = pathPrefix + thumbSrc;
+      }
+
+      card.innerHTML = `
+        <div class="tag-result-thumb">
+          <img src="${thumbSrc}" alt="${project.title}">
+        </div>
+        <div class="tag-result-info">
+          <span class="tag-result-title">${project.title}</span>
+          <span class="tag-result-category">${project.category}</span>
+        </div>
+      `;
+      tagResultsGrid.appendChild(card);
+    });
+
+    tagModal.classList.add('active');
+    document.body.style.overflow = 'hidden'; // Prevent scroll
+  }
+
+  function closeTagModalFunc() {
+    tagModal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  // Event Listeners for tags
+  document.addEventListener('click', (e) => {
+    const tagBadge = e.target.closest('.skill-badge');
+    if (tagBadge) {
+      const tagName = tagBadge.textContent.trim();
+      openTagModal(tagName);
+    }
+  });
+
+  closeTagModal.addEventListener('click', closeTagModalFunc);
+  tagModal.addEventListener('click', (e) => {
+    if (e.target === tagModal) closeTagModalFunc();
+  });
+
+  // ESC key to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeTagModalFunc();
+  });
+
 });
 
 // ================================
-// EMAIL COPY — outside DOMContentLoaded to guarantee execution
+// EMAIL COPY — outside DOMContentLoaded
 // ================================
 (function initEmailCopy() {
   const EMAIL = "maxime.perigny.50@gmail.com";
@@ -542,14 +653,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function showFeedback(btn) {
-    // If button has the two-span structure, use CSS class animation
     if (btn.querySelector('.email-text-default')) {
       btn.classList.add('copied');
-      setTimeout(function() {
-        btn.classList.remove('copied');
-      }, 2200);
+      setTimeout(function() { btn.classList.remove('copied'); }, 2200);
     } else {
-      // Fallback: simple text swap
       const orig = btn.textContent.trim();
       btn.textContent = '✓ EMAIL COPIÉ !';
       btn.style.backgroundColor = '#2d9e4f';
@@ -566,7 +673,6 @@ document.addEventListener('DOMContentLoaded', () => {
     var btns = document.querySelectorAll('.footer-email-block, #emailBtn');
     btns.forEach(function(btn) {
       btn.removeAttribute('href');
-      // Remove old listeners by cloning
       var newBtn = btn.cloneNode(true);
       btn.parentNode.replaceChild(newBtn, btn);
       newBtn.addEventListener('click', function(e) {
