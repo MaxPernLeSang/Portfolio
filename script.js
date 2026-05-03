@@ -503,3 +503,70 @@ document.addEventListener('DOMContentLoaded', () => {
     timelineYears.forEach(year => yearObserver.observe(year));
   }
 });
+
+// ================================
+// EMAIL COPY — outside DOMContentLoaded to guarantee execution
+// ================================
+(function initEmailCopy() {
+  const EMAIL = "maxime.perigny.50@gmail.com";
+
+  function copyEmail() {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(EMAIL).catch(() => {});
+      return;
+    }
+    try {
+      const el = document.createElement('textarea');
+      el.value = EMAIL;
+      el.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0;';
+      document.body.appendChild(el);
+      el.focus();
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+    } catch (e) {}
+  }
+
+  function showFeedback(btn) {
+    // If button has the two-span structure, use CSS class animation
+    if (btn.querySelector('.email-text-default')) {
+      btn.classList.add('copied');
+      setTimeout(function() {
+        btn.classList.remove('copied');
+      }, 2200);
+    } else {
+      // Fallback: simple text swap
+      const orig = btn.textContent.trim();
+      btn.textContent = '✓ EMAIL COPIÉ !';
+      btn.style.backgroundColor = '#2d9e4f';
+      btn.style.color = '#fff';
+      setTimeout(function() {
+        btn.textContent = orig;
+        btn.style.backgroundColor = '';
+        btn.style.color = '';
+      }, 2200);
+    }
+  }
+
+  function attachListeners() {
+    var btns = document.querySelectorAll('.footer-email-block, #emailBtn');
+    btns.forEach(function(btn) {
+      btn.removeAttribute('href');
+      // Remove old listeners by cloning
+      var newBtn = btn.cloneNode(true);
+      btn.parentNode.replaceChild(newBtn, btn);
+      newBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        showFeedback(newBtn);
+        copyEmail();
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', attachListeners);
+  } else {
+    attachListeners();
+  }
+})();

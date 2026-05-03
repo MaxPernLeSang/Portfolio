@@ -4,8 +4,65 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Maxime Périgny - Portfolio</title>
-  <meta name="description" content="Portfolio de Maxime Périgny - Découvrez mes projets créatifs et mon travail.">
+  <title>Maxime Périgny | Vidéaste & Créateur Visuel - Portfolio</title>
+  <meta name="description" content="Maxime Périgny, vidéaste et créateur visuel basé entre l'Abitibi et les Alpes. Prise de vue, montage vidéo, motion design et direction artistique pour vos projets créatifs.">
+  <meta name="keywords" content="Maxime Périgny, vidéaste, créateur visuel, montage vidéo, motion design, vidéo, Abitibi, Alpes, La Rosière, portfolio vidéo, prise de vue, color grading">
+  <meta name="author" content="Maxime Périgny">
+  <meta name="robots" content="index, follow">
+  <meta name="geo.region" content="FR-73">
+  <meta name="geo.placename" content="La Rosière, Savoie">
+  <meta name="geo.position" content="45.631;6.829">
+  <meta name="ICBM" content="45.631, 6.829">
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://maximeperigny.com/">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://maximeperigny.com/">
+  <meta property="og:title" content="Maxime Périgny | Vidéaste & Créateur Visuel">
+  <meta property="og:description" content="Vidéaste et créateur visuel entre l'Abitibi et les Alpes. Découvrez mes projets de prise de vue, montage et motion design.">
+  <meta property="og:image" content="https://maximeperigny.com/assets/scrolly/french_alps.png">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:site_name" content="Maxime Périgny Portfolio">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://maximeperigny.com/">
+  <meta property="twitter:title" content="Maxime Périgny | Vidéaste & Créateur Visuel">
+  <meta property="twitter:description" content="Vidéaste et créateur visuel entre l'Abitibi et les Alpes. Découvrez mes projets de prise de vue, montage et motion design.">
+  <meta property="twitter:image" content="https://maximeperigny.com/assets/scrolly/french_alps.png">
+  
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Maxime Périgny",
+    "jobTitle": "Vidéaste & Créateur Visuel",
+    "description": "Vidéaste et créateur visuel entre l'Abitibi et les Alpes",
+    "url": "https://maximeperigny.com/",
+    "image": "https://maximeperigny.com/assets/scrolly/french_alps.png",
+    "sameAs": [
+      "https://www.linkedin.com/in/maxime-périgny-69b9b31ba/"
+    ],
+    "knowsAbout": ["Prise de vue", "Montage vidéo", "Motion design", "Color grading", "Sound design", "Photographie", "Étalonnage"],
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "La Rosière",
+      "addressRegion": "Savoie",
+      "addressCountry": "FR"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "45.631",
+      "longitude": "6.829"
+    }
+  }
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -136,10 +193,16 @@
               <span class="stat-label">Projets réalisés</span>
             </div>
           </div>
-          <a href="story.html" class="btn btn-outline" style="margin-top: 2rem;">
-            Découvrir mon histoire
-            <span class="btn-icon">→</span>
-          </a>
+          <div class="skills-list" style="margin-top: 2rem;">
+            <span class="skill-badge">Prise de vue</span>
+            <span class="skill-badge">Montage vidéo</span>
+            <span class="skill-badge">Motion design</span>
+            <span class="skill-badge">Color grading</span>
+            <span class="skill-badge">Sound design</span>
+            <span class="skill-badge">Photographie</span>
+            <span class="skill-badge">Étalonnage</span>
+            <span class="skill-badge">Pilote de drone</span>
+          </div>
         </div>
         <div class="about-image-wrapper">
           <img src="assets/scrolly/french_alps.png" alt="Maxime Périgny - À propos" class="about-image">
@@ -294,7 +357,8 @@
 
                 
                 <button type="button" class="footer-email-block">
-                    MAXIME.PERIGNY.50@GMAIL.COM
+                    <span class="email-text-default">MAXIME.PERIGNY.50@GMAIL.COM</span>
+                    <span class="email-text-copied">✓ &nbsp;EMAIL COPIÉ !</span>
                 </button>
                 
                 <div class="footer-social-row">

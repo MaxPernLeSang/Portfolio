@@ -846,11 +846,11 @@ h3 {
 }
 
 .skill-badge {
-  padding: 6px 16px;
+  padding: 10px 24px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 50px;
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--text-secondary);
   transition: all var(--transition-base);
 }
@@ -897,6 +897,27 @@ h3 {
   background: rgba(100, 149, 237, 0.08);
   border-color: rgba(100, 149, 237, 0.2);
   color: #6495ed;
+}
+
+/* ----- AI Badge ----- */
+
+.badge-ai {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-md);
+}
+
+.badge-ai svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
 }
 
 /* ----- Credits ----- */
@@ -1554,59 +1575,85 @@ h3 {
   margin-bottom: 2.5rem;
 }
 
+@keyframes emailCopiedIn {
+  0%   { background-color: #fff; color: #0a0a0a; transform: translateY(0) scale(1); box-shadow: none; }
+  15%  { transform: translateY(-6px) scale(1.02); }
+  30%  { background-color: #2d9e4f; color: #fff; transform: translateY(-4px) scale(1.01); box-shadow: 0 12px 40px rgba(45, 158, 79, 0.5); }
+  80%  { background-color: #2d9e4f; color: #fff; transform: translateY(-4px) scale(1.01); box-shadow: 0 12px 40px rgba(45, 158, 79, 0.5); }
+  100% { background-color: #fff; color: #0a0a0a; transform: translateY(0) scale(1); box-shadow: none; }
+}
+
 .footer-email-block {
   position: relative;
   cursor: pointer;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Taille stable pour éviter l'effet "petit" */
+  min-width: 380px; 
+  height: 5rem;
+  overflow: hidden;
+  
   background: var(--text-primary);
   color: var(--bg-primary);
   font-family: var(--font-display);
-  font-size: clamp(1rem, 3vw, 1.5rem);
+  font-size: 1.2rem;
   font-weight: 700;
-  padding: 1.5rem 2.5rem;
   border-radius: var(--radius-sm);
   text-decoration: none;
-  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color 0.3s ease, color 0.3s ease;
   margin-bottom: 4rem;
-  /* Reset button defaults */
   border: none;
-  -webkit-appearance: none;
-  appearance: none;
   outline: none;
   letter-spacing: 0.05em;
+  
+  /* Transition de fond très fluide */
+  transition: 
+    background-color 0.6s cubic-bezier(0.23, 1, 0.32, 1),
+    transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.footer-email-block::after {
-  content: "Email copié !";
+.footer-email-block span {
   position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%) translateY(10px);
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: var(--text-primary);
-  padding: 0.5rem 1rem;
-  border-radius: var(--radius-sm);
-  font-size: 0.85rem;
-  font-weight: 600;
-  opacity: 0;
-  pointer-events: none;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  white-space: nowrap;
-  margin-bottom: 10px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.footer-email-block.copied::after {
+.email-text-default {
   opacity: 1;
-  transform: translateX(-50%) translateY(0);
+  transform: translateY(0);
 }
 
-.footer-email-block:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
-  color: var(--bg-primary);
+.email-text-copied {
+  opacity: 0;
+  transform: translateY(30px);
+  color: #fff;
+}
+
+/* État Copié - Animation Smooth */
+.footer-email-block.copied {
+  background-color: #2d9e4f !important;
+  box-shadow: 0 15px 40px rgba(45, 158, 79, 0.3);
+  transform: scale(1.02);
+}
+
+.footer-email-block.copied .email-text-default {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+
+.footer-email-block.copied .email-text-copied {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.footer-email-block:hover:not(.copied) {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(255, 255, 255, 0.15);
 }
 
 .footer-social-row {
