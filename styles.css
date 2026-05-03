@@ -1547,6 +1547,234 @@ h3 {
   z-index: 3;
 }
 
+/* ----- Diploma Card ----- */
+.diploma-card {
+  cursor: pointer;
+}
+
+.diploma-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.diploma-card:hover .diploma-icon {
+  background: rgba(255, 255, 255, 0.12);
+  transform: scale(1.05);
+}
+
+.diploma-icon {
+  transition: all var(--transition-base);
+}
+
+/* ----- Synopsis with Video Layout ----- */
+.synopsis-with-video {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  align-items: flex-start;
+  margin-bottom: var(--space-lg);
+}
+
+.synopsis-text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.synopsis-video {
+  flex: 0 0 280px;
+  max-width: 280px;
+  align-self: flex-start;
+}
+
+.synopsis-video video {
+  width: 100%;
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+}
+
+/* Custom Video Player */
+.custom-video-player {
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #000;
+}
+
+.custom-video-player video {
+  width: 100%;
+  display: block;
+}
+
+.video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.custom-video-player.playing .video-overlay {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.custom-video-player:hover .video-overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.play-pause-btn {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.play-pause-btn:hover {
+  background: white;
+  transform: scale(1.1);
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.4);
+}
+
+.play-pause-btn svg {
+  width: 40px;
+  height: 40px;
+  color: #000;
+}
+
+.pause-icon {
+  display: none;
+}
+
+.custom-video-player.playing .play-icon {
+  display: none;
+}
+
+.custom-video-player.playing .pause-icon {
+  display: block;
+}
+
+.video-controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  padding: 20px 15px 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.custom-video-player:hover .video-controls {
+  opacity: 1;
+}
+
+.play-pause-small {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.play-pause-small:hover {
+  background: var(--accent-hover);
+  transform: scale(1.1);
+}
+
+.play-pause-small svg {
+  width: 20px;
+  height: 20px;
+  color: white;
+}
+
+.video-progress {
+  flex: 1;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+  cursor: pointer;
+  position: relative;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+  position: relative;
+}
+
+.progress-filled {
+  height: 100%;
+  background: var(--accent-primary);
+  border-radius: 3px;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+.video-time {
+  color: white;
+  font-size: 12px;
+  font-weight: 500;
+  min-width: 100px;
+}
+
+.volume-btn, .fullscreen-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.volume-btn:hover, .fullscreen-btn:hover {
+  color: var(--accent-primary);
+  transform: scale(1.1);
+}
+
+.volume-btn svg, .fullscreen-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.volume-muted {
+  display: none;
+}
+
+.custom-video-player.muted .volume-high {
+  display: none;
+}
+
+.custom-video-player.muted .volume-muted {
+  display: block;
+}
+
 @media (max-width: 992px) {
   .about-grid {
     grid-template-columns: 1fr;
