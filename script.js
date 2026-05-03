@@ -370,14 +370,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // FORCE EMAIL BUTTON CLICK & COPY TO CLIPBOARD
   const emailBtn = document.getElementById('emailBtn');
   if (emailBtn) {
-    emailBtn.addEventListener('click', (e) => {
+    emailBtn.addEventListener('click', async (e) => {
       e.preventDefault();
       const email = "maxime.perigny.50@gmail.com";
-      const originalText = emailBtn.innerHTML; // Save innerHTML to keep styling if any
 
-      // Copy to clipboard
-      navigator.clipboard.writeText(email).then(() => {
-        // Visual feedback
+      const doVisualFeedback = () => {
         emailBtn.textContent = "Email copié !";
         emailBtn.style.backgroundColor = "#4CA154"; // Green success feedback
         emailBtn.style.color = "#FFFFFF";
@@ -390,16 +387,67 @@ document.addEventListener('DOMContentLoaded', () => {
           emailBtn.style.color = "";
           emailBtn.style.borderColor = "";
         }, 2000);
+      };
 
-        // Still try to open mail client
-        window.location.href = `mailto:${email}`;
-      }).catch(err => {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(email);
+        } else {
+          const textArea = document.createElement("textarea");
+          textArea.value = email;
+          textArea.style.position = "fixed";
+          textArea.style.top = "0";
+          textArea.style.left = "0";
+          textArea.style.opacity = "0";
+          document.body.appendChild(textArea);
+          textArea.focus();
+          textArea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textArea);
+        }
+        doVisualFeedback();
+      } catch (err) {
         console.error('Failed to copy: ', err);
-        // Fallback if copy fails
         window.location.href = `mailto:${email}`;
-      });
+      }
     });
   }
+
+  // FOOTER EMAIL BLOCK - COPY TO CLIPBOARD
+  const footerEmailBlocks = document.querySelectorAll('.footer-email-block');
+  footerEmailBlocks.forEach(block => {
+    block.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const email = "maxime.perigny.50@gmail.com";
+      
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(email);
+        } else {
+          // Fallback for file:// protocol or non-secure contexts
+          const textArea = document.createElement("textarea");
+          textArea.value = email;
+          textArea.style.position = "fixed";
+          textArea.style.top = "0";
+          textArea.style.left = "0";
+          textArea.style.opacity = "0";
+          document.body.appendChild(textArea);
+          textArea.focus();
+          textArea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textArea);
+        }
+        
+        block.classList.add('copied');
+        setTimeout(() => {
+          block.classList.remove('copied');
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy: ', err);
+        window.location.href = `mailto:${email}`;
+      }
+    });
+  });
 
   // ================================
   // PROJECT FILTERS

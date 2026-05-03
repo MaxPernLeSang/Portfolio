@@ -1555,6 +1555,8 @@ h3 {
 }
 
 .footer-email-block {
+  position: relative;
+  cursor: pointer;
   display: inline-block;
   background: var(--text-primary);
   color: var(--bg-primary);
@@ -1566,6 +1568,33 @@ h3 {
   text-decoration: none;
   transition: transform var(--transition-base), box-shadow var(--transition-base);
   margin-bottom: 4rem;
+}
+
+.footer-email-block::after {
+  content: "Email copié !";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--text-primary);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  margin-bottom: 10px;
+}
+
+.footer-email-block.copied::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 
 .footer-email-block:hover {
