@@ -367,99 +367,65 @@ document.addEventListener('DOMContentLoaded', () => {
     addHoverListeners();
   }
 
-  // FORCE EMAIL BUTTON CLICK & COPY TO CLIPBOARD
-  const emailBtn = document.getElementById('emailBtn');
-  if (emailBtn) {
-    emailBtn.addEventListener('click', async (e) => {
-      e.preventDefault();
-      const email = "maxime.perigny.50@gmail.com";
+  // UNIVERSAL EMAIL COPY LOGIC (NO MAILTO ALLOWED)
+  const emailLinks = document.querySelectorAll('.footer-email-block, #emailBtn');
+  const EMAIL = "maxime.perigny.50@gmail.com";
 
-      const doVisualFeedback = () => {
-        emailBtn.textContent = "Email copié !";
-        emailBtn.style.backgroundColor = "#4CA154"; // Green success feedback
-        emailBtn.style.color = "#FFFFFF";
-        emailBtn.style.borderColor = "#4CA154";
-
-        // Revert after 2 seconds
-        setTimeout(() => {
-          emailBtn.innerHTML = "M'envoyer un email";
-          emailBtn.style.backgroundColor = ""; // Reset to CSS default
-          emailBtn.style.color = "";
-          emailBtn.style.borderColor = "";
-        }, 2000);
-      };
-
+  function copyEmailToClipboard() {
+    // Method 1: Modern clipboard API
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(EMAIL).then(() => true).catch(() => false);
+    }
+    // Method 2: Legacy execCommand fallback
+    return new Promise((resolve) => {
       try {
-        if (navigator.clipboard && window.isSecureContext) {
-          await navigator.clipboard.writeText(email);
-        } else {
-          const textArea = document.createElement("textarea");
-          textArea.value = email;
-          textArea.style.position = "fixed";
-          textArea.style.top = "0";
-          textArea.style.left = "0";
-          textArea.style.opacity = "0";
-          document.body.appendChild(textArea);
-          textArea.focus();
-          textArea.select();
-          document.execCommand('copy');
-          document.body.removeChild(textArea);
-        }
-        doVisualFeedback();
-      } catch (err) {
-        console.error('Failed to copy: ', err);
-        window.location.href = `mailto:${email}`;
+        const el = document.createElement('textarea');
+        el.value = EMAIL;
+        el.style.cssText = 'position:fixed;top:0;left:0;opacity:0;pointer-events:none;';
+        document.body.appendChild(el);
+        el.select();
+        el.setSelectionRange(0, 99999);
+        const success = document.execCommand('copy');
+        document.body.removeChild(el);
+        resolve(success);
+      } catch (e) {
+        resolve(false);
       }
     });
   }
 
-  // FOOTER EMAIL BLOCK - COPY TO CLIPBOARD
-  const footerEmailBlocks = document.querySelectorAll('.footer-email-block');
-  footerEmailBlocks.forEach(block => {
-    // 1. Remove href to hide "mailto:..." browser tooltip
-    block.removeAttribute('href');
-    block.style.cursor = 'pointer';
+  function showEmailCopiedFeedback(el) {
+    const originalText = el.textContent.trim();
+    const originalBg = el.style.backgroundColor;
+    const originalColor = el.style.color;
+    const originalBorder = el.style.borderColor || '';
 
-    block.addEventListener('click', async (e) => {
+    el.textContent = "EMAIL COPIÉ !";
+    el.style.backgroundColor = "#4CA154";
+    el.style.color = "#FFFFFF";
+    el.style.borderColor = "#4CA154";
+
+    setTimeout(() => {
+      el.textContent = originalText;
+      el.style.backgroundColor = originalBg;
+      el.style.color = originalColor;
+      el.style.borderColor = originalBorder;
+    }, 2000);
+  }
+
+  emailLinks.forEach(el => {
+    el.removeAttribute('href');
+    el.style.cursor = 'pointer';
+
+    el.addEventListener('click', async (e) => {
       e.preventDefault();
-      const email = "maxime.perigny.50@gmail.com";
-      
-      try {
-        if (navigator.clipboard && window.isSecureContext) {
-          await navigator.clipboard.writeText(email);
-        } else {
-          // Fallback for file:// protocol or non-secure contexts
-          const textArea = document.createElement("textarea");
-          textArea.value = email;
-          textArea.style.position = "fixed";
-          textArea.style.top = "0";
-          textArea.style.left = "0";
-          textArea.style.opacity = "0";
-          document.body.appendChild(textArea);
-          textArea.focus();
-          textArea.select();
-          document.execCommand('copy');
-          document.body.removeChild(textArea);
-        }
-        
-        block.classList.add('copied');
-        
-        // Stronger visual feedback: update text & color
-        const originalText = block.innerHTML;
-        block.innerHTML = "EMAIL COPIÉ !";
-        block.style.backgroundColor = "#4CA154";
-        block.style.color = "#FFFFFF";
+      e.stopPropagation();
 
-        setTimeout(() => {
-          block.classList.remove('copied');
-          block.innerHTML = originalText;
-          block.style.backgroundColor = "";
-          block.style.color = "";
-        }, 2000);
-      } catch (err) {
-        console.error('Failed to copy: ', err);
-        alert("Email: " + email);
-      }
+      // Always show feedback immediately — don't wait for clipboard
+      showEmailCopiedFeedback(el);
+
+      // Try to copy in background
+      await copyEmailToClipboard();
     });
   });
 

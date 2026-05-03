@@ -1566,8 +1566,14 @@ h3 {
   padding: 1.5rem 2.5rem;
   border-radius: var(--radius-sm);
   text-decoration: none;
-  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color 0.3s ease, color 0.3s ease;
   margin-bottom: 4rem;
+  /* Reset button defaults */
+  border: none;
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  letter-spacing: 0.05em;
 }
 
 .footer-email-block::after {
