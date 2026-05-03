@@ -64,14 +64,18 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!section.hasAttribute('data-story')) return;
 
         const bg = section.querySelector('.story-bg');
-        const textEl = section.querySelector('.story-text-el');
+        const textEls = section.querySelectorAll('.story-text-el');
+        const numBlocks = Math.max(1, textEls.length);
         const isFramed = bg && bg.classList.contains('bg-image') && !bg.classList.contains('fullscreen');
+        
+        // Ajuster la hauteur de défilement selon le nombre de blocs de texte (ex: 100% de plus par bloc)
+        const scrollDistance = 100 + (numBlocks * 100);
         
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: section,
                 start: 'top top',
-                end: '+=200%',
+                end: '+=' + scrollDistance + '%',
                 scrub: 1,
                 pin: true,
                 pinSpacing: true
@@ -82,22 +86,42 @@ document.addEventListener("DOMContentLoaded", () => {
             if (isFramed) {
                 gsap.set(bg, { opacity: 0, scale: 1.08, xPercent: -50, yPercent: -50, top: '50%', left: '50%' });
                 tl.to(bg, { opacity: 1, scale: 1, duration: 0.4, ease: 'power2.out' }, 0);
-                tl.to(bg, { opacity: 0, scale: 0.95, duration: 0.4, ease: 'power2.in' }, 0.6);
             } else {
                 tl.fromTo(bg, { opacity: 0, scale: 1.08 }, { opacity: 1, scale: 1, duration: 0.4, ease: 'power2.out' }, 0);
-                tl.to(bg, { opacity: 0, scale: 0.95, duration: 0.4, ease: 'power2.in' }, 0.6);
             }
         }
 
-        if (textEl) {
-            tl.fromTo(textEl, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, 0.1);
-            tl.to(textEl, { opacity: 0, y: -60, duration: 0.4, ease: 'power2.in' }, 0.6);
+        let currentTime = 0.1; // Commence légèrement après le background
+
+        // Animation séquentielle de CHAQUE bloc de texte détecté
+        textEls.forEach((el) => {
+            // Fondu entrant de bas en haut
+            tl.fromTo(el, 
+                { opacity: 0, y: 60 }, 
+                { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, 
+                currentTime
+            );
+            
+            currentTime += 0.5; // Temps de lecture avant de disparaître
+            
+            // Fondu sortant vers le haut
+            tl.to(el, 
+                { opacity: 0, y: -60, duration: 0.4, ease: 'power2.in' }, 
+                currentTime
+            );
+            
+            currentTime += 0.4; // Décalage pour le bloc suivant
+        });
+
+        // À la toute fin, on fait disparaître le background
+        if (bg) {
+            tl.to(bg, { opacity: 0, scale: 0.95, duration: 0.4, ease: 'power2.in' }, currentTime);
         }
 
         const progContainer = section.querySelector('.progress-bar-container');
         if (progContainer) {
             tl.fromTo(progContainer, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 0.2);
-            tl.to(progContainer, { opacity: 0, duration: 0.4, ease: 'power2.in' }, 0.6);
+            tl.to(progContainer, { opacity: 0, duration: 0.4, ease: 'power2.in' }, currentTime);
         }
     });
 
