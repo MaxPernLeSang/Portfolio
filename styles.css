@@ -1966,6 +1966,41 @@ h3 {
   font-size: 0.85rem;
 }
 
+/* Mobile Fixes for Footer */
+@media (max-width: 768px) {
+  .footer-large {
+    padding: 4rem 1.5rem 2rem;
+  }
+
+  .footer-huge-title {
+    font-size: 11vw !important; /* Dynamically fits the screen width */
+    line-height: 1.1;
+    margin-bottom: 2rem;
+  }
+
+  .footer-email-block {
+    font-size: 3.5vw !important; /* Smaller text for the email */
+    padding: 1.25rem 1rem;
+    width: 100%;
+    border-radius: 16px;
+  }
+
+  .footer-top-line {
+    margin-bottom: 2.5rem;
+  }
+
+  .footer-social-row {
+    flex-direction: column;
+    gap: 0.8rem;
+    width: 100%;
+  }
+
+  .footer-social-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 /* ==========================================================================
    TAG MODAL SYSTEM (LIQUID GLASS SLIDER)
    ========================================================================== */
