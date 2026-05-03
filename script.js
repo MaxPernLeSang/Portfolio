@@ -235,16 +235,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const projectId = match ? match[1] : null;
     let previewPath = card.dataset.preview || (projectId ? `assets/previews/${projectId}.mp4` : null);
 
-    // Ajustement dynamique de la qualité vidéo pour mobile vs desktop
-    if (previewPath && previewPath.includes('res.cloudinary.com')) {
+    // Optimization for Cloudinary - Only apply if not already optimized
+    if (previewPath && previewPath.includes('res.cloudinary.com') && !previewPath.includes('/q_')) {
       const isMobile = window.innerWidth <= 768 || window.matchMedia("(hover: none) and (pointer: coarse)").matches;
-      if (isMobile) {
-        // Compression extrême et basse résolution pour mobile
-        previewPath = previewPath.replace('/upload/', '/upload/q_auto:eco,w_300,');
-      } else {
-        // Bonne qualité pour desktop
-        previewPath = previewPath.replace('/upload/', '/upload/q_auto:good,w_800,');
-      }
+      const params = isMobile ? 'q_auto:eco,w_400,' : 'q_auto:good,w_800,';
+      previewPath = previewPath.replace('/upload/', `/upload/${params}`);
     }
 
     card.playPreview = () => {
