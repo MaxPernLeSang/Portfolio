@@ -416,6 +416,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // FOOTER EMAIL BLOCK - COPY TO CLIPBOARD
   const footerEmailBlocks = document.querySelectorAll('.footer-email-block');
   footerEmailBlocks.forEach(block => {
+    // 1. Remove href to hide "mailto:..." browser tooltip
+    block.removeAttribute('href');
+    block.style.cursor = 'pointer';
+
     block.addEventListener('click', async (e) => {
       e.preventDefault();
       const email = "maxime.perigny.50@gmail.com";
@@ -439,12 +443,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         block.classList.add('copied');
+        
+        // Stronger visual feedback: update text & color
+        const originalText = block.innerHTML;
+        block.innerHTML = "EMAIL COPIÉ !";
+        block.style.backgroundColor = "#4CA154";
+        block.style.color = "#FFFFFF";
+
         setTimeout(() => {
           block.classList.remove('copied');
+          block.innerHTML = originalText;
+          block.style.backgroundColor = "";
+          block.style.color = "";
         }, 2000);
       } catch (err) {
         console.error('Failed to copy: ', err);
-        window.location.href = `mailto:${email}`;
+        alert("Email: " + email);
       }
     });
   });
