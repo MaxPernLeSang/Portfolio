@@ -518,7 +518,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ================================
-  // TAG MODAL SYSTEM
+  // TAG MODAL SYSTEM (SLIDER VERSION)
   // ================================
   
   const PROJECTS_DATABASE = [
@@ -547,15 +547,25 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="tag-modal-overlay" id="tagModal">
       <div class="tag-modal-container">
         <div class="tag-modal-close" id="closeTagModal">
-          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </div>
+        
         <div class="tag-modal-header">
           <span class="tag-modal-label">Projets liés au tag</span>
           <h2 class="tag-modal-title" id="tagModalTitle">Tag Name</h2>
         </div>
-        <div class="tag-results-grid" id="tagResultsGrid">
-          <!-- Results injected here -->
+
+        <div class="tag-slider-wrapper">
+          <button class="tag-slider-btn prev" id="tagPrev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+          
+          <div class="tag-slider-content" id="tagSliderContent">
+            <!-- Project Card Injected Here -->
+          </div>
+
+          <button class="tag-slider-btn next" id="tagNext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
         </div>
+
+        <div class="tag-slider-dots" id="tagSliderDots"></div>
       </div>
     </div>
   `;
@@ -563,44 +573,86 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const tagModal = document.getElementById('tagModal');
   const tagModalTitle = document.getElementById('tagModalTitle');
-  const tagResultsGrid = document.getElementById('tagResultsGrid');
+  const tagSliderContent = document.getElementById('tagSliderContent');
+  const tagSliderDots = document.getElementById('tagSliderDots');
   const closeTagModal = document.getElementById('closeTagModal');
+  const tagPrev = document.getElementById('tagPrev');
+  const tagNext = document.getElementById('tagNext');
 
-  // Detect if we are in a subfolder (projets/projet_x/)
+  let currentTagProjects = [];
+  let currentProjectIndex = 0;
+
   const isSubfolder = window.location.pathname.includes('/projets/');
   const pathPrefix = isSubfolder ? '../../' : '';
 
-  function openTagModal(tagName) {
-    tagModalTitle.textContent = tagName;
-    tagResultsGrid.innerHTML = '';
+  function updateSlider() {
+    const project = currentTagProjects[currentProjectIndex];
+    if (!project) return;
 
-    const filteredProjects = PROJECTS_DATABASE.filter(p => p.tags.includes(tagName));
-
-    filteredProjects.forEach(project => {
-      const card = document.createElement('a');
-      card.href = pathPrefix + "projets/" + project.id + "/index.html";
-      card.className = 'tag-result-card';
-      
-      // Fix thumb path
+    tagSliderContent.classList.add('fading');
+    
+    setTimeout(() => {
       let thumbSrc = project.thumb;
       if (!thumbSrc.startsWith('http') && !thumbSrc.startsWith('/')) {
         thumbSrc = pathPrefix + thumbSrc;
       }
 
-      card.innerHTML = `
-        <div class="tag-result-thumb">
-          <img src="${thumbSrc}" alt="${project.title}">
-        </div>
-        <div class="tag-result-info">
-          <span class="tag-result-title">${project.title}</span>
-          <span class="tag-result-category">${project.category}</span>
+      tagSliderContent.innerHTML = `
+        <div class="tag-focus-card">
+          <div class="tag-focus-image">
+            <img src="${thumbSrc}" alt="${project.title}">
+          </div>
+          <div class="tag-focus-info">
+            <span class="tag-focus-category">${project.category}</span>
+            <h3 class="tag-focus-title">${project.title}</h3>
+            <a href="${pathPrefix}projets/${project.id}/index.html" class="btn btn-primary tag-focus-link">Découvrir le projet</a>
+          </div>
         </div>
       `;
-      tagResultsGrid.appendChild(card);
+      
+      // Update dots
+      document.querySelectorAll('.tag-dot').forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === currentProjectIndex);
+      });
+
+      // Update buttons visibility
+      tagPrev.style.opacity = currentProjectIndex === 0 ? '0.3' : '1';
+      tagNext.style.opacity = currentProjectIndex === currentTagProjects.length - 1 ? '0.3' : '1';
+      tagPrev.style.pointerEvents = currentProjectIndex === 0 ? 'none' : 'auto';
+      tagNext.style.pointerEvents = currentProjectIndex === currentTagProjects.length - 1 ? 'none' : 'auto';
+
+      tagSliderContent.classList.remove('fading');
+    }, 200);
+  }
+
+  function openTagModal(tagName) {
+    tagModalTitle.textContent = tagName;
+    currentTagProjects = PROJECTS_DATABASE.filter(p => p.tags.includes(tagName));
+    currentProjectIndex = 0;
+
+    // Create dots
+    tagSliderDots.innerHTML = '';
+    currentTagProjects.forEach((_, idx) => {
+      const dot = document.createElement('div');
+      dot.className = 'tag-dot';
+      dot.addEventListener('click', () => {
+        currentProjectIndex = idx;
+        updateSlider();
+      });
+      tagSliderDots.appendChild(dot);
     });
 
+    if (currentTagProjects.length <= 1) {
+      tagPrev.style.display = 'none';
+      tagNext.style.display = 'none';
+    } else {
+      tagPrev.style.display = 'flex';
+      tagNext.style.display = 'flex';
+    }
+
+    updateSlider();
     tagModal.classList.add('active');
-    document.body.style.overflow = 'hidden'; // Prevent scroll
+    document.body.style.overflow = 'hidden';
   }
 
   function closeTagModalFunc() {
@@ -608,12 +660,24 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.style.overflow = '';
   }
 
-  // Event Listeners for tags
+  tagPrev.addEventListener('click', () => {
+    if (currentProjectIndex > 0) {
+      currentProjectIndex--;
+      updateSlider();
+    }
+  });
+
+  tagNext.addEventListener('click', () => {
+    if (currentProjectIndex < currentTagProjects.length - 1) {
+      currentProjectIndex++;
+      updateSlider();
+    }
+  });
+
   document.addEventListener('click', (e) => {
     const tagBadge = e.target.closest('.skill-badge');
     if (tagBadge) {
-      const tagName = tagBadge.textContent.trim();
-      openTagModal(tagName);
+      openTagModal(tagBadge.textContent.trim());
     }
   });
 
@@ -622,9 +686,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target === tagModal) closeTagModalFunc();
   });
 
-  // ESC key to close
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeTagModalFunc();
+    if (tagModal.classList.contains('active')) {
+      if (e.key === 'ArrowRight') tagNext.click();
+      if (e.key === 'ArrowLeft') tagPrev.click();
+    }
   });
 
 });
