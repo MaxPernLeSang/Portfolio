@@ -1907,26 +1907,62 @@ h3 {
   color: #fff;
 }
 
-/* État Copié - Animation Smooth */
+/* État Copié - Animation Premium */
 .footer-email-block.copied {
-  background-color: #2d9e4f !important;
-  box-shadow: 0 15px 40px rgba(45, 158, 79, 0.3);
-  transform: scale(1.02);
+  background-color: #00c853 !important; /* Vert plus vibrant */
+  box-shadow: 0 20px 40px rgba(0, 200, 83, 0.4);
+  transform: scale(0.96); /* Petit effet de pression au clic */
+  border-color: rgba(255, 255, 255, 0.4);
+  animation: successPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes successPop {
+  0% { transform: scale(1); }
+  30% { transform: scale(0.92); }
+  60% { transform: scale(1.05); }
+  100% { transform: scale(1.02); }
 }
 
 .footer-email-block.copied .email-text-default {
   opacity: 0;
-  transform: translateY(-30px);
+  transform: translateY(-20px) scale(0.8);
+  filter: blur(5px);
 }
 
 .footer-email-block.copied .email-text-copied {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
+  font-weight: 700;
+  letter-spacing: 0.1em;
 }
 
 .footer-email-block:hover:not(.copied) {
   transform: translateY(-5px);
-  box-shadow: 0 15px 35px rgba(255, 255, 255, 0.15);
+  box-shadow: 0 20px 40px rgba(255, 255, 255, 0.12);
+  background-color: #fff !important;
+  color: #000 !important;
+}
+
+/* Ripple effect on click */
+.footer-email-block::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: width 0.6s, height 0.6s, opacity 0.6s;
+}
+
+.footer-email-block:active::after {
+  width: 300px;
+  height: 300px;
+  opacity: 1;
+  transition: 0s;
 }
 
 .footer-social-row {
