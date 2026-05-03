@@ -1969,34 +1969,46 @@ h3 {
 /* Mobile Fixes for Footer */
 @media (max-width: 768px) {
   .footer-large {
-    padding: 4rem 1.5rem 2rem;
+    padding: 5rem 1.5rem 3rem;
   }
 
   .footer-huge-title {
-    font-size: 11vw !important; /* Dynamically fits the screen width */
-    line-height: 1.1;
+    font-size: 10vw !important;
+    line-height: 1;
     margin-bottom: 2rem;
+    width: 100%;
+    text-align: center;
   }
 
   .footer-email-block {
-    font-size: 3.5vw !important; /* Smaller text for the email */
-    padding: 1.25rem 1rem;
-    width: 100%;
-    border-radius: 16px;
+    font-size: 3.2vw !important; /* Smaller to fit better */
+    padding: 1rem 1.5rem;
+    width: auto;
+    max-width: 100%;
+    display: inline-flex;
+    margin: 0 auto 3rem;
+    border-radius: 12px;
+    letter-spacing: 0.05em;
   }
 
   .footer-top-line {
-    margin-bottom: 2.5rem;
+    margin-bottom: 3rem;
+    justify-content: center;
+  }
+
+  .footer-top-text {
+    margin-right: 0.5rem;
   }
 
   .footer-social-row {
     flex-direction: column;
-    gap: 0.8rem;
+    gap: 1rem;
     width: 100%;
+    align-items: center;
   }
 
   .footer-social-btn {
-    width: 100%;
+    width: 180px; /* Fixed width for better stacking */
     justify-content: center;
   }
 }
