@@ -29,6 +29,20 @@ document.addEventListener('DOMContentLoaded', () => {
     observer.observe(card);
   });
 
+  // Observe scroll-animate elements (like About section)
+  const scrollObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        scrollObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('.scroll-animate').forEach(el => {
+    scrollObserver.observe(el);
+  });
+
   // Slider Scroll Hint - Show after inactivity if no horizontal scroll
   const sliderContainer = document.getElementById('sliderContainer');
   const sliderScrollHint = document.getElementById('sliderScrollHint');
