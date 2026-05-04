@@ -247,48 +247,75 @@ document.addEventListener('DOMContentLoaded', () => {
       if (hasError || !previewPath) return;
 
       if (!video) {
-        // MP4 Preview
+        // Create Wrapper
+        const wrapper = document.createElement('div');
+        wrapper.className = 'project-preview-wrapper';
+        
+        // Main Video
         video = document.createElement('video');
         video.src = previewPath;
-        video.className = 'project-preview-video';
+        video.className = 'project-preview-video main';
         video.muted = true;
         video.loop = true;
         video.playsInline = true;
 
+        // Background Blur Video (cloned)
+        const bgVideo = document.createElement('video');
+        bgVideo.src = previewPath;
+        bgVideo.className = 'project-preview-video bg-blur';
+        bgVideo.muted = true;
+        bgVideo.loop = true;
+        bgVideo.playsInline = true;
+
+        wrapper.appendChild(bgVideo);
+        wrapper.appendChild(video);
+
         video.addEventListener('loadeddata', () => {
-          if (!card.wantsToPlay) return; // Ne pas jouer si l'élément n'est plus actif
+          if (!card.wantsToPlay) return; 
+          
+          // Detect vertical video
           if (video.videoHeight > video.videoWidth) {
-            video.style.objectFit = 'contain';
+            wrapper.classList.add('vertical-preview');
           }
-          video.classList.add('active');
+          
+          wrapper.classList.add('active');
           video.play().catch(e => console.log('Preview playback failed:', e));
+          bgVideo.play().catch(e => {});
         });
 
         video.addEventListener('error', () => {
           hasError = true;
-          video.remove();
+          wrapper.remove();
           video = null;
         });
 
         const thumbnail = card.querySelector('.project-thumbnail') || (card.classList.contains('timeline-card') ? (card.style.position = 'relative', card) : card);
-        if (thumbnail) thumbnail.appendChild(video);
+        if (thumbnail) thumbnail.appendChild(wrapper);
+        
+        card.previewWrapper = wrapper;
+        card.bgVideo = bgVideo;
       } else {
         if (!card.wantsToPlay) return;
         video.currentTime = 0;
+        if (card.bgVideo) card.bgVideo.currentTime = 0;
+        
         video.play().catch(e => { });
-        video.classList.add('active');
+        if (card.bgVideo) card.bgVideo.play().catch(e => {});
+        
+        if (card.previewWrapper) card.previewWrapper.classList.add('active');
       }
     };
 
     card.stopPreview = () => {
       card.wantsToPlay = false;
-      if (video) {
-        video.classList.remove('active');
+      if (card.previewWrapper) {
+        card.previewWrapper.classList.remove('active');
         setTimeout(() => {
-          if (video && !video.classList.contains('active')) {
+          if (video && card.previewWrapper && !card.previewWrapper.classList.contains('active')) {
             video.pause();
+            if (card.bgVideo) card.bgVideo.pause();
           }
-        }, 400); // Wait for fade out
+        }, 400); 
       }
     };
 
@@ -517,9 +544,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // ================================
   
   const PROJECTS_DATABASE = [
+    { id: "projet_20", title: "Fin de Saison - La Rosière", category: "Vidéo", tags: ["Montagne", "Social Media", "Montage"], thumb: "https://res.cloudinary.com/dtwelbtjt/video/upload/v1777920765/On_a_trouve%CC%81_le_dernier_skieur_de_la_saison_Et_on_vous_donne_de%CC%81ja%CC%80_rendez-vous_le_27-06_pour_pas_buam0l.jpg" },
+    { id: "projet_19", title: "Équipe de France", category: "Photo", tags: ["Photographie", "Sport", "Prise de vue"], thumb: "assets/thumbnails/DSC0620.jpg" },
     { id: "projet_18", title: "Freeride Qualifier 4☆", category: "Sport", tags: ["Sport", "Événement", "Prise de vue"], thumb: "https://i.ytimg.com/vi/YR2tEMqG_XM/hqdefault.jpg" },
-    { id: "projet_17", title: "Coucou La Rosière Vlog", category: "Vlog", tags: ["Vlog", "Websérie", "Montage"], thumb: "https://i.ytimg.com/vi/lX4GxFVD1zQ/hqdefault.jpg" },
-    { id: "projet_16", title: "Le décor est posé", category: "Nature", tags: ["Nature", "Social Media", "Montage"], thumb: "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/d37350197104915.662a83d294937.jpg" },
     { id: "projet_15", title: "Coucou La Rosière FAQ", category: "Websérie", tags: ["Websérie", "FAQ", "Social Media"], thumb: "https://i.ytimg.com/vi/1dzWt-Lpazg/hqdefault.jpg" },
     { id: "projet_14", title: "Tour de l'Avenir 2025", category: "Cyclisme", tags: ["Cyclisme", "Reportage", "Prise de vue"], thumb: "projets/projet_14/DSC05861.jpg" },
     { id: "projet_13", title: "Site Officiel La Rosière", category: "Contenu Web", tags: ["Contenu Web", "Photographie", "Prise de vue"], thumb: "assets/thumbnails/la_rosiere_site_v2.png" },
@@ -565,6 +592,35 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
   `;
   document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+  // Create Photo Modal Structure (reusing tag modal glass styling)
+  const photoModalHTML = `
+    <style>
+      .gallery-item img { cursor: zoom-in; transition: transform 0.3s ease; }
+      .gallery-item img:hover { transform: scale(1.03); }
+      #photoModalImg { transition: opacity 0.2s ease; }
+    </style>
+    <div class="tag-modal-overlay" id="photoModal">
+      <div class="tag-modal-container" style="padding: 40px; max-width: 1000px; display: flex; flex-direction: column; align-items: center;">
+        <div class="tag-modal-close" id="closePhotoModal">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </div>
+        
+        <div class="tag-slider-wrapper" style="width: 100%;">
+          <button class="tag-slider-btn prev" id="photoPrev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+          
+          <div class="tag-slider-content" id="photoSliderContent" style="min-height: auto; width: 100%; height: 65vh; display: flex; justify-content: center; align-items: center;">
+            <img id="photoModalImg" src="" alt="Zoomed Photo" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);">
+          </div>
+
+          <button class="tag-slider-btn next" id="photoNext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+        </div>
+
+        <div class="tag-slider-dots" id="photoSliderDots"></div>
+      </div>
+    </div>
+  `;
+  document.body.insertAdjacentHTML('beforeend', photoModalHTML);
 
   const tagModal = document.getElementById('tagModal');
   const tagModalTitle = document.getElementById('tagModalTitle');
@@ -682,10 +738,111 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeTagModalFunc();
+    if (e.key === 'Escape') { closeTagModalFunc(); closePhotoModalFunc(); }
     if (tagModal.classList.contains('active')) {
       if (e.key === 'ArrowRight') tagNext.click();
       if (e.key === 'ArrowLeft') tagPrev.click();
+    }
+    if (photoModal.classList.contains('active')) {
+      if (e.key === 'ArrowRight') photoNext.click();
+      if (e.key === 'ArrowLeft') photoPrev.click();
+    }
+  });
+
+  // Photo Modal Logic
+  const photoModal = document.getElementById('photoModal');
+  const photoModalImg = document.getElementById('photoModalImg');
+  const closePhotoModal = document.getElementById('closePhotoModal');
+  const photoPrev = document.getElementById('photoPrev');
+  const photoNext = document.getElementById('photoNext');
+  const photoSliderDots = document.getElementById('photoSliderDots');
+  
+  let currentGalleryImages = [];
+  let currentPhotoIndex = 0;
+
+  function updatePhotoSlider() {
+    if (!currentGalleryImages[currentPhotoIndex]) return;
+    
+    photoModalImg.style.opacity = '0';
+    setTimeout(() => {
+      photoModalImg.src = currentGalleryImages[currentPhotoIndex];
+      photoModalImg.style.opacity = '1';
+      
+      document.querySelectorAll('#photoSliderDots .tag-dot').forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === currentPhotoIndex);
+      });
+
+      if (photoPrev) {
+        photoPrev.style.opacity = currentPhotoIndex === 0 ? '0.3' : '1';
+        photoPrev.style.pointerEvents = currentPhotoIndex === 0 ? 'none' : 'auto';
+      }
+      if (photoNext) {
+        photoNext.style.opacity = currentPhotoIndex === currentGalleryImages.length - 1 ? '0.3' : '1';
+        photoNext.style.pointerEvents = currentPhotoIndex === currentGalleryImages.length - 1 ? 'none' : 'auto';
+      }
+    }, 200);
+  }
+
+  function openPhotoModal(imgSrc, galleryImages) {
+    currentGalleryImages = galleryImages;
+    currentPhotoIndex = currentGalleryImages.indexOf(imgSrc);
+    if (currentPhotoIndex === -1) currentPhotoIndex = 0;
+
+    photoSliderDots.innerHTML = '';
+    if (currentGalleryImages.length > 1) {
+      currentGalleryImages.forEach((_, idx) => {
+        const dot = document.createElement('div');
+        dot.className = 'tag-dot';
+        dot.addEventListener('click', () => {
+          currentPhotoIndex = idx;
+          updatePhotoSlider();
+        });
+        photoSliderDots.appendChild(dot);
+      });
+      if (photoPrev) photoPrev.style.display = 'flex';
+      if (photoNext) photoNext.style.display = 'flex';
+    } else {
+      if (photoPrev) photoPrev.style.display = 'none';
+      if (photoNext) photoNext.style.display = 'none';
+    }
+
+    updatePhotoSlider();
+    photoModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closePhotoModalFunc() {
+    photoModal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  if (photoPrev) {
+    photoPrev.addEventListener('click', () => {
+      if (currentPhotoIndex > 0) { currentPhotoIndex--; updatePhotoSlider(); }
+    });
+  }
+
+  if (photoNext) {
+    photoNext.addEventListener('click', () => {
+      if (currentPhotoIndex < currentGalleryImages.length - 1) { currentPhotoIndex++; updatePhotoSlider(); }
+    });
+  }
+
+  if (closePhotoModal) closePhotoModal.addEventListener('click', closePhotoModalFunc);
+  if (photoModal) photoModal.addEventListener('click', (e) => {
+    if (e.target === photoModal) closePhotoModalFunc();
+  });
+
+  document.addEventListener('click', (e) => {
+    const galleryImg = e.target.closest('.gallery-item img');
+    if (galleryImg) {
+      const gallery = galleryImg.closest('.photo-gallery');
+      if (gallery) {
+        const allImgs = Array.from(gallery.querySelectorAll('img')).map(img => img.src);
+        openPhotoModal(galleryImg.src, allImgs);
+      } else {
+        openPhotoModal(galleryImg.src, [galleryImg.src]);
+      }
     }
   });
 

@@ -61,7 +61,6 @@ body {
   background: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.6;
-  overflow-x: hidden;
 }
 
 a {
@@ -483,22 +482,54 @@ h3 {
   transform: scale(1.1);
 }
 
-.project-preview-video {
+/* Video Preview Container */
+.project-preview-wrapper {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
   opacity: 0;
   transition: opacity 0.4s ease;
   z-index: 5;
   pointer-events: none;
   background: #000;
+  overflow: hidden;
 }
 
-.project-preview-video.active {
+.project-preview-wrapper.active {
   opacity: 1;
+}
+
+.project-preview-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.project-preview-video.bg-blur {
+  position: absolute;
+  top: 0;
+  left: 0;
+  filter: blur(20px) brightness(0.6);
+  transform: scale(1.1); /* Prevent white edges from blur */
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.vertical-preview .project-preview-video.bg-blur {
+  opacity: 1;
+}
+
+.project-preview-video.main {
+  position: relative;
+  z-index: 1;
+  object-fit: cover; /* Default */
+}
+
+.vertical-preview .project-preview-video.main {
+  object-fit: contain;
 }
 
 /* Placeholder for project thumbnails */
@@ -699,6 +730,32 @@ h3 {
   border-radius: var(--radius-lg);
 }
 
+/* Vertical Video Style for Project Pages */
+.project-video-vertical {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9/16;
+  max-width: 450px;
+  margin: 0 auto var(--space-xl);
+  background: #000;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.project-video-vertical video.bg-blur {
+  display: none; /* Removed blur since we want a clean vertical player now */
+}
+
+.project-video-vertical video.main {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .client-badge {
   display: inline-flex;
   align-items: center;
@@ -756,13 +813,22 @@ h3 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--space-2xl);
-  align-items: start;
   margin-top: var(--space-xl);
 }
 
 .project-media {
+  position: -webkit-sticky;
   position: sticky;
   top: 120px;
+  align-self: start;
+  max-height: calc(100vh - 150px);
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.project-media::-webkit-scrollbar {
+  display: none;
 }
 
 .project-main-image {
@@ -1082,7 +1148,7 @@ h3 {
 
 /* ----- Project Detail Responsive ----- */
 
-@media (max-width: 900px) {
+@media (max-width: 768px) {
   .project-hero-split {
     grid-template-columns: 1fr;
     gap: var(--space-xl);
@@ -2217,7 +2283,6 @@ h3 {
 @media (max-width: 768px) {
     /* 1. Global & Layout */
     html, body {
-        overflow-x: hidden !important;
         width: 100% !important;
     }
 
