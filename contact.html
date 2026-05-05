@@ -209,12 +209,30 @@
             fill: var(--text-secondary);
         }
 
-        /* Mobile adjustments */
         @media (max-width: 768px) {
             .contact-content {
                 padding-left: var(--space-md);
                 padding-right: var(--space-md);
-                max-width: 55%;
+                max-width: 100%;
+                padding-top: 5vh;
+            }
+
+            .contact-value {
+                font-size: 0.95rem;
+            }
+
+            .contact-icon {
+                width: 40px;
+                height: 40px;
+            }
+
+            .contact-info {
+                gap: var(--space-md);
+            }
+
+            .btn {
+                font-size: 0.85rem;
+                padding: 0.7rem 1.2rem;
             }
         }
     </style>
@@ -313,7 +331,7 @@
                         </a>
                         <a href="mailto:maxime.perigny.50@gmail.com" class="btn btn-outline" id="emailBtn"
                             style="position: relative; z-index: 20;">
-                            M'envoyer un email
+                            Copier mon mail
                         </a>
                     </div>
 

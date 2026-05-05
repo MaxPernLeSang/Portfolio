@@ -403,7 +403,7 @@ document.addEventListener('DOMContentLoaded', () => {
     addHoverListeners();
   }
 
-  // UNIVERSAL EMAIL COPY LOGIC (NO MAILTO ALLOWED)
+  // UNIVERSAL EMAIL COPY LOGIC
   const emailLinks = document.querySelectorAll('.footer-email-block, #emailBtn');
   const EMAIL = "maxime.perigny.50@gmail.com";
 
