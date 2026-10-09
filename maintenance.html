@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&family=Caveat:wght@500&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap"
     rel="stylesheet">
 
   <style>
@@ -46,22 +46,13 @@
     @keyframes blink { 0%, 60% { opacity: 1 } 61%, 100% { opacity: .2 } }
 
     main { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 64px 0; }
-    .label {
-      font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--accent); margin: 0 0 24px;
-    }
     h1 {
       font-family: 'Instrument Serif', serif; font-weight: 400; font-size: clamp(48px, 8vw, 120px);
       line-height: 0.94; letter-spacing: -0.02em; margin: 0; max-width: 12em; text-wrap: balance;
     }
     h1 em { font-style: italic; color: var(--accent); }
-    .scribble {
-      font-family: 'Caveat', cursive; font-size: 24px; color: var(--accent); margin: 28px 0 0;
-      transform: rotate(-2deg); transform-origin: left;
-    }
-    .lede { font-size: 16px; line-height: 1.7; color: var(--body); margin: 32px 0 28px; max-width: 460px; }
     .mail {
-      align-self: flex-start; display: inline-flex; align-items: center; gap: 10px;
+      align-self: flex-start; margin-top: 40px; display: inline-flex; align-items: center; gap: 10px;
       font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase;
       border-bottom: 1px solid var(--paper); padding-bottom: 4px;
     }
@@ -90,15 +81,11 @@
   <div class="page">
     <header class="hd">
       <span class="name">Maxime Périgny</span>
-      <span class="status"><span class="rec" aria-hidden="true"></span>En montage</span>
+      <span class="status"><span class="rec" aria-hidden="true"></span>Sur DaVinci Resolve Studio</span>
     </header>
 
     <main>
-      <p class="label">Vidéaste · photographe</p>
       <h1>Le site est en <em>salle de montage.</em></h1>
-      <p class="scribble">de retour très bientôt</p>
-      <p class="lede">Je refais mon portfolio de A à Z. En attendant, pour un tournage, une photo ou une question,
-        écris-moi directement.</p>
       <a class="mail" href="mailto:maxime.perigny.50@gmail.com">maxime.perigny.50@gmail.com <span>→</span></a>
     </main>
 
