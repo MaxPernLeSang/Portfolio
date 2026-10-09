@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Offline Reel Generator - Maxime Périgny</title>
+  <meta name="description"
+    content="Une app Mac qui transforme une vidéo longue en clips verticaux avec sous-titres animés. Transcription, détection des moments et recadrage se font sur ton Mac, hors-ligne.">
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="https://maximeperigny.com/offline-reel-generator">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Offline Reel Generator">
+  <meta property="og:description" content="Transforme tes vidéos longues en clips verticaux, hors-ligne sur ton Mac.">
+  <meta property="og:url" content="https://maximeperigny.com/offline-reel-generator">
+  <meta name="theme-color" content="#17150f">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Caveat:wght@500&display=swap"
+    rel="stylesheet">
+
+  <style>
+    /* Dark "carnet de terrain" design from the portfolio refresh */
+    :root {
+      --ink: #17150f;
+      --paper: #f4f1ea;
+      --accent: #e08a6d;
+      --rec: #d9452b;
+      --line: rgba(244, 241, 234, 0.14);
+      --line-strong: rgba(244, 241, 234, 0.25);
+      --muted: rgba(244, 241, 234, 0.5);
+      --body: rgba(244, 241, 234, 0.72);
+      --serif: 'Instrument Serif', Georgia, serif;
+      --sans: 'Instrument Sans', system-ui, sans-serif;
+      --mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+      --hand: 'Caveat', cursive;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--ink); font-family: var(--sans); color: var(--paper); }
+    a { color: inherit; text-decoration: none; transition: color .25s, border-color .25s; }
+    a:hover { color: var(--accent); }
+    ::selection { background: var(--accent); color: var(--ink); }
+    [hidden] { display: none !important; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+    .page { position: relative; min-height: 100vh; overflow: hidden; }
+    .px { padding-left: 56px; padding-right: 56px; }
+    .label {
+      font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--muted); margin: 0;
+    }
+
+    /* Header */
+    .hd {
+      position: relative; z-index: 5; display: flex; justify-content: space-between; align-items: center;
+      padding-top: 24px; padding-bottom: 24px;
+    }
+    .hd-name { font-family: var(--serif); font-size: 22px; letter-spacing: 0.01em; }
+    .nv {
+      display: flex; gap: 28px; font-family: var(--mono); font-size: 12px;
+      text-transform: uppercase; letter-spacing: 0.12em;
+    }
+    .nv a { color: rgba(244, 241, 234, 0.55); }
+    .nv a:hover { color: var(--paper); }
+    .nv a.current { color: var(--paper); border-bottom: 1px solid var(--paper); padding-bottom: 2px; }
+    .nv a.contact { color: var(--accent); }
+
+    /* Full-width media with viewfinder */
+    .media {
+      position: relative; margin: 0; width: 100%; aspect-ratio: 16 / 9; max-height: 88vh;
+      background: #000; overflow: hidden; display: flex; align-items: center; justify-content: center;
+    }
+    .media > svg { width: min(30%, 360px); fill: var(--paper); }
+    .vf {
+      position: absolute; inset: 28px; pointer-events: none; font-family: var(--mono); font-size: 11px;
+      letter-spacing: 0.1em; color: var(--paper); text-transform: uppercase;
+    }
+    .vf .c { position: absolute; width: 28px; height: 28px; border: 0 solid var(--paper); }
+    .vf .tl { top: 0; left: 0; border-top-width: 1.5px; border-left-width: 1.5px; }
+    .vf .tr { top: 0; right: 0; border-top-width: 1.5px; border-right-width: 1.5px; }
+    .vf .bl { bottom: 0; left: 0; border-bottom-width: 1.5px; border-left-width: 1.5px; }
+    .vf .br { bottom: 0; right: 0; border-bottom-width: 1.5px; border-right-width: 1.5px; }
+    .vf .t { position: absolute; }
+    .vf .t1 { top: 10px; left: 40px; display: flex; align-items: center; gap: 8px; }
+    .vf .t2 { top: 10px; right: 40px; }
+    .vf .t3 { bottom: 10px; left: 40px; }
+    .vf .t4 { bottom: 10px; right: 40px; }
+    .rec { width: 8px; height: 8px; border-radius: 50%; background: var(--rec); animation: blink 1.4s steps(1) infinite; }
+    @keyframes blink { 0%, 60% { opacity: 1 } 61%, 100% { opacity: .2 } }
+
+    /* Title + credits */
+    .info {
+      padding-top: 56px; padding-bottom: 72px; display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 56px; align-items: end; border-bottom: 1px solid var(--line);
+    }
+    .back {
+      display: inline-block; font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 24px;
+    }
+    .info h1 {
+      font-family: var(--serif); font-weight: 400; font-size: clamp(48px, 7vw, 104px); line-height: 0.94;
+      letter-spacing: -0.02em; margin: 0; text-wrap: balance;
+    }
+    .scribble {
+      font-family: var(--hand); font-size: 24px; color: var(--accent); margin: 0 0 18px;
+      transform: rotate(-2deg); transform-origin: left;
+    }
+    .creds {
+      margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 24px;
+      font-family: var(--mono); font-size: 12.5px;
+    }
+    .creds div { padding: 14px 0; border-top: 1px solid var(--line-strong); }
+    .creds dt { font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+    .creds dd { margin: 0; line-height: 1.4; }
+    .creds s { color: var(--muted); margin-left: 8px; }
+
+    /* Pitch + buy */
+    .pitch {
+      padding-top: 72px; padding-bottom: 72px; display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 56px; align-items: end; border-bottom: 1px solid var(--line);
+    }
+    .pitch .lead { font-family: var(--serif); font-size: clamp(28px, 3vw, 40px); line-height: 1.25; margin: 0; max-width: 760px; }
+    .pitch .lead em { font-style: italic; color: var(--accent); }
+    .pitch p.body { font-size: 16px; line-height: 1.7; color: var(--body); margin: 0 0 24px; }
+    .cta {
+      display: inline-flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 13px;
+      text-transform: uppercase; letter-spacing: 0.1em; border-bottom: 1px solid var(--paper); padding-bottom: 4px;
+    }
+    .cta:hover { border-color: var(--accent); }
+    .cta s { color: var(--muted); }
+    .cta-note { display: block; margin-top: 12px; font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+
+    /* Sections */
+    .sec { padding-top: 72px; padding-bottom: 72px; border-bottom: 1px solid var(--line); }
+    .sec-head { display: flex; justify-content: space-between; align-items: baseline; gap: 24px; margin-bottom: 28px; }
+
+    .steps { list-style: none; margin: 0; padding: 0; }
+    .steps li {
+      display: grid; grid-template-columns: 48px minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 16px 24px;
+      align-items: baseline; padding: 22px 0; border-top: 1px solid var(--line-strong);
+    }
+    .steps .n { font-family: var(--mono); font-size: 12px; color: var(--accent); }
+    .steps h3 { font-family: var(--serif); font-weight: 400; font-size: 28px; line-height: 1.1; margin: 0; }
+    .steps p { font-size: 16px; line-height: 1.7; color: var(--body); margin: 0; max-width: 560px; }
+
+    .split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 56px; align-items: start; }
+    .split .lead { font-family: var(--serif); font-size: 30px; line-height: 1.3; margin: 0; max-width: 460px; }
+    .rows { margin: 0; font-family: var(--mono); font-size: 12.5px; }
+    .rows div { display: flex; justify-content: space-between; gap: 16px; padding: 14px 0; border-top: 1px solid var(--line-strong); }
+    .rows dt { color: var(--body); }
+    .rows dd { margin: 0; text-align: right; white-space: nowrap; }
+    .rows dd.never { color: var(--accent); }
+
+    /* Closing buy block */
+    .buy-end { padding-top: 72px; padding-bottom: 80px; }
+    .buy-end .label { margin-bottom: 24px; }
+    .buy-big {
+      font-family: var(--serif); font-size: clamp(40px, 6vw, 88px); line-height: 1; letter-spacing: -0.02em;
+      display: inline-block;
+    }
+    .buy-end p.fine { margin: 24px 0 0; font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+
+    /* Footer */
+    .ft { padding-top: 64px; padding-bottom: 40px; border-top: 1px solid var(--line); }
+    .ft .label { margin-bottom: 24px; }
+    .ft-big { font-family: var(--serif); font-size: clamp(36px, 5vw, 64px); line-height: 1.05; display: block; margin-bottom: 36px; }
+    .ft-bottom {
+      display: flex; justify-content: space-between; align-items: center; gap: 16px;
+      border-top: 1px solid rgba(244, 241, 234, 0.15); padding-top: 20px;
+      font-family: var(--mono); font-size: 11.5px; color: var(--muted);
+    }
+    .ft-bottom a:hover { color: var(--paper); }
+
+    @media (max-width: 820px) {
+      .px { padding-left: 20px; padding-right: 20px; }
+      .hd { padding-top: 18px; padding-bottom: 18px; }
+      .nv { gap: 14px; font-size: 11px; flex-wrap: wrap; justify-content: flex-end; }
+      .media { aspect-ratio: 4 / 3; }
+      .media > svg { width: 46%; }
+      .vf { display: none; }
+      .info, .pitch { grid-template-columns: minmax(0, 1fr); gap: 28px; padding-top: 32px; padding-bottom: 48px; }
+      .info h1 { font-size: 44px; }
+      .sec, .buy-end { padding-top: 48px; padding-bottom: 48px; }
+      .sec-head { flex-direction: column; gap: 8px; }
+      .steps li { grid-template-columns: 36px minmax(0, 1fr); }
+      .steps p { grid-column: 2; }
+      .split { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+      .split .lead { font-size: 26px; }
+      .rows dd { white-space: normal; }
+      .ft { padding-top: 44px; padding-bottom: 28px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .rec { animation: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <header class="hd px">
+      <a href="../index.html" class="hd-name">Maxime Périgny</a>
+      <nav class="nv" aria-label="Navigation principale">
+        <a href="../index.html">Accueil</a>
+        <a href="../projects.html" class="current">Projets</a>
+        <a href="../index.html#apropos">À propos</a>
+        <a href="../contact.html" class="contact">Contact</a>
+      </nav>
+    </header>
+
+    <figure class="media">
+      <svg viewBox="0 0 830 378" role="img" aria-label="Logo d'Offline Reel Generator">
+        <path d="M0 0 L395 242 L395 378 L0 378 Z M435 242 L830 0 L830 378 L435 378 Z" />
+      </svg>
+      <div class="vf" aria-hidden="true">
+        <span class="c tl"></span><span class="c tr"></span><span class="c bl"></span><span class="c br"></span>
+        <span class="t t1"><span class="rec"></span>REC</span>
+        <span class="t t2">9:16 · 1080 × 1920</span>
+        <span class="t t3">App Mac</span>
+        <span class="t t4">2026</span>
+      </div>
+    </figure>
+
+    <div class="info px">
+      <div>
+        <a href="../projects.html" class="back">← Tous les projets</a>
+        <h1>Offline Reel Generator</h1>
+      </div>
+      <div>
+        <p class="scribble">fonctionne aussi en avion</p>
+        <dl class="creds">
+          <div><dt>Type</dt><dd>App Mac</dd></div>
+          <div><dt>Année</dt><dd>2026</dd></div>
+          <div><dt>Plateforme</dt><dd>Apple Silicon (M1 et plus), macOS 12+</dd></div>
+          <div><dt>Licence</dt><dd>À vie, 2 Mac</dd></div>
+          <div><dt>Prix</dt><dd><span class="js-now">12,99 $ US</span><s class="js-was">19,99 $ US</s></dd></div>
+          <div><dt>Paiement</dt><dd>Unique, sans abonnement</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pitch px">
+      <p class="lead">Tu lui donnes un podcast, une entrevue ou un live. Elle te rend des clips verticaux avec
+        des sous-titres animés, <em>sans rien envoyer en ligne.</em></p>
+      <div>
+        <p class="body">Les clips sont prêts pour TikTok, Reels et Shorts. La transcription, le choix des moments,
+          le recadrage et l'export se font tous sur ton Mac.</p>
+        <a href="#" class="cta buy"><span class="js-cta">Acheter · 12,99 $ US</span> <s class="js-was">19,99 $</s> <span>→</span></a>
+        <span class="cta-note js-launch">Paiement unique.</span>
+      </div>
+    </div>
+
+    <section class="sec px" aria-labelledby="what">
+      <div class="sec-head">
+        <p class="label" id="what">Ce que fait l'app</p>
+        <p class="label">De la vidéo longue aux clips</p>
+      </div>
+      <ol class="steps">
+        <li>
+          <span class="n">01</span>
+          <h3>Elle trouve les moments</h3>
+          <p>Un modèle d'IA local lit la transcription et propose des clips de 15 à 60 secondes, chacun avec un
+            titre et une note. Les coupes tombent en fin de phrase.</p>
+        </li>
+        <li>
+          <span class="n">02</span>
+          <h3>Elle transcrit mot à mot</h3>
+          <p>Whisper tourne sur ton Mac et date chaque mot, ce qui garde les sous-titres calés sur la voix. Il
+            utilise la puce Apple Silicon pour aller vite.</p>
+        </li>
+        <li>
+          <span class="n">03</span>
+          <h3>Elle garde la personne qui parle dans le cadre</h3>
+          <p>Le recadrage 9:16 suit les visages et repère qui parle en comparant le mouvement des lèvres avec le
+            son.</p>
+        </li>
+        <li>
+          <span class="n">04</span>
+          <h3>Des sous-titres animés</h3>
+          <p>Surlignage du mot, pop, fondu, contour, lueur. Tu peux corriger un mot ou décaler une ligne, et
+            l'export est identique à l'aperçu.</p>
+        </li>
+        <li>
+          <span class="n">05</span>
+          <h3>Un export par lots</h3>
+          <p>Mets les clips voulus dans la file et exporte-les d'un coup, en 1080 × 1920 et en H.264, avec
+            l'encodeur matériel du Mac.</p>
+        </li>
+        <li>
+          <span class="n">06</span>
+          <h3>Tu gardes la main sur le montage</h3>
+          <p>Déplace n'importe quel point d'entrée ou de sortie sur la timeline, ajoute tes propres clips ou
+            ignore les suggestions.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section class="sec px" aria-labelledby="net">
+      <div class="sec-head">
+        <p class="label" id="net">Quand elle se connecte à internet</p>
+      </div>
+      <div class="split">
+        <p class="lead">Tes images restent sur ton ordinateur. Tu peux t'en servir sans connexion, et avec des
+          images que tu n'as pas le droit de partager.</p>
+        <dl class="rows">
+          <div><dt>Transcription, détection des clips, rendu</dt><dd class="never">Jamais</dd></div>
+          <div><dt>Tes vidéos et tes transcriptions</dt><dd class="never">Jamais</dd></div>
+          <div><dt>Première installation, pour télécharger les modèles d'IA</dt><dd>Une fois</dd></div>
+          <div><dt>Activation de ta clé de licence</dt><dd>Une fois</dd></div>
+          <div><dt>Vérification de la licence</dt><dd>Tous les 14 jours</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <div class="buy-end px">
+      <p class="label js-launch-label">Paiement unique</p>
+      <a href="#" class="buy-big buy"><span class="js-cta-big">Acheter pour 12,99 $ US</span> →</a>
+      <p class="fine">Licence à vie pour 2 Mac. Paiement géré par Lemon Squeezy.</p>
+    </div>
+
+    <footer class="ft px">
+      <p class="label">Une question sur l'app ?</p>
+      <a href="../contact.html" class="ft-big">Écrivez-moi →</a>
+      <div class="ft-bottom">
+        <span>© 2026 Maxime Périgny</span>
+        <a href="https://www.linkedin.com/in/maxime-périgny-69b9b31ba/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var CHECKOUT = "https://maxpern.lemonsqueezy.com/checkout/buy/3062963b-da60-43e8-9086-88eb061e82bf";
+      // Same instant the LAUNCH code expires in Lemon Squeezy (Nov 5, 00:00 UTC)
+      var LAUNCH_END = new Date("2026-11-05T00:00:00Z");
+      var launch = new Date() < LAUNCH_END;
+
+      function all(sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); }
+      function set(sel, text) { all(sel).forEach(function (el) { el.textContent = text; }); }
+
+      var href = launch ? CHECKOUT + "?checkout%5Bdiscount_code%5D=LAUNCH" : CHECKOUT;
+      all(".buy").forEach(function (a) { a.href = href; a.target = "_blank"; a.rel = "noopener"; });
+
+      if (launch) {
+        var when = new Date(LAUNCH_END - 1000).toLocaleDateString("fr-CA", { month: "long", day: "numeric", timeZone: "America/Toronto" });
+        set(".js-launch", "Paiement unique. Prix de lancement jusqu'au " + when + ".");
+        set(".js-launch-label", "Prix de lancement jusqu'au " + when);
+      } else {
+        all(".js-was").forEach(function (el) { el.hidden = true; });
+        set(".js-now", "19,99 $ US");
+        set(".js-cta", "Acheter · 19,99 $ US");
+        set(".js-cta-big", "Acheter pour 19,99 $ US");
+      }
+    })();
+  </script>
+</body>
+
+</html>
