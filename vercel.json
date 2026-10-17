@@ -2,7 +2,7 @@
   "cleanUrls": true,
   "redirects": [
     {
-      "source": "/((?!maintenance).*)",
+      "source": "/((?!maintenance|api/).*)",
       "destination": "/maintenance",
       "permanent": false
     }
